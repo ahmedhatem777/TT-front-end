@@ -5,3 +5,16 @@
 .container-fluid {
     min-height: 100vh;
 }
+
+.logged-in-container {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.logged-in-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}

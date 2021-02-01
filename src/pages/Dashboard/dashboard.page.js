@@ -2,13 +2,13 @@ import React from 'react';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button';
-import TaskCard from '../../components/task-card/task-card.component';
+// import TaskCard from '../../components/task-card/task-card.component';
 import './dashboard.styles.scss';
 
-const Dashboard = () => {
+const Dashboard = (props) => {
     return (
-        <div className="container profile-page-container">
-            <div className="profile-page-header-div">
+        <div className="container logged-in-container">
+            <div className="logged-in-header">
                 <h3>TASKS:</h3>
                 <DropdownButton id="dropdown-basic-button" title="SORT BY">
                     <Dropdown.Item onSelect={() => { console.log("Creation Date (Ascending)")}  } >Creation Date (Ascending)</Dropdown.Item>
@@ -22,7 +22,13 @@ const Dashboard = () => {
             {/* <TaskCard /> */}
             <div className="notasks-and-button-div">
                 <h5 className="no-tasks-heading">You seem to have no tasks at the moment.</h5>
-                <Button className="add-task-button" size="sm">ADD NEW TASK</Button>
+                <Button 
+                    className="add-task-button" 
+                    size="sm" 
+                    onClick={ () => props.history.push(`/addtask`) }
+                >
+                    ADD NEW TASK
+                </Button>
             </div>
             
 
