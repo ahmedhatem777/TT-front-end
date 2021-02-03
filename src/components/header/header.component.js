@@ -2,7 +2,7 @@ import React from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, NavLink } from 'react-router-dom';
-import { slide as Menu } from 'react-burger-menu'
+import { slide as Menu } from 'react-burger-menu';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import './header.styles.scss';
 
@@ -31,6 +31,14 @@ class Header extends React.Component {
         clearAllBodyScrollLocks();
     }
 
+    // burgerIcon = (
+    //     <IconContext.Provider value={{ color: "white", size="5em"}}>
+    //         <div>
+    //             <AiOutlineMenu className="burger-menu-icon" />
+    //         </div>
+    //     </IconContext.Provider>
+    // )
+
     render () {
         return (
             this.props.isAuthenticated ?
@@ -50,12 +58,12 @@ class Header extends React.Component {
                     <div className="row no-gutters">
                         <div className="col-3 col-md-1 burger-col">
                             <Menu 
-                              isOpen={this.state.menuOpen}
-                              className="my-menu"
-                              id="burger-menu" 
-                              disableAutoFocus
-                              onOpen={this.handleOnOpen} 
-                              onClose={this.handleOnClose}
+                                isOpen={this.state.menuOpen}
+                                className="my-menu"
+                                id="burger-menu" 
+                                disableAutoFocus
+                                onOpen={this.handleOnOpen} 
+                                onClose={this.handleOnClose}
                             >
                                 <NavLink 
                                     to="/dashboard" 

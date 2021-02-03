@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard/dashboard.page';
 import AddTaskPage from './pages/Add-Task/add-task.page';
 import ShowProfilePage from './pages/Show-Profile/show-profile.page';
 import EditProfilePage from './pages/Edit-Profile/edit-profile.page';
+import NotFoundPage from './pages/Not-Found/not-found.page';
 import Footer from './components/footer/footer.component';
 import './App.css';
 
@@ -29,6 +30,8 @@ function App() {
             <Route exact path="/showprofile" component={ShowProfilePage} />
 
             <Route exact path="/editprofile" component={EditProfilePage} />
+
+            <Route exact path="/*" component={NotFoundPage} />
 
           </Switch>
         </div>

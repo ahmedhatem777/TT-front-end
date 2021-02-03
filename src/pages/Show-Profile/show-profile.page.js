@@ -49,6 +49,16 @@ const ShowProfilePage = (props) => {
                             <p>69</p>
                         </div>
 
+                        <div className="my-form-group">
+                            <p className="info-label"><small><b>COMPLETED TASKS:</b></small></p>
+                            <p>69</p>
+                        </div>
+
+                        <div className="my-form-group">
+                            <p className="info-label"><small><b>JOINED:</b></small></p>
+                            <p>30 October, 1997</p>
+                        </div>
+
                         <div className="edit-info-button">
                             <Button size="sm" onClick={() => props.history.push('/editprofile')}>EDIT INFO</Button>
                         </div>

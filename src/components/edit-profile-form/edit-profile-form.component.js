@@ -2,6 +2,7 @@ import React from 'react';
 import Figure from 'react-bootstrap/Figure';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import avatar from '../../assets/avatar_placeholder.png';
 import './edit-profile-form.styles.scss';
 
@@ -27,11 +28,9 @@ const EditProfileForm = (props) => {
                             </Figure.Caption>
                         </Figure>
                     </div>
-
                 </div>
 
                 <div className="col-12 col-md-9 col-lg-9 profile-col">
-
                     <Form.Group>
                         <Form.Label><small><b>NAME:</b></small></Form.Label>
                         <Form.Control defaultValue="Ahmed Hatem" />
