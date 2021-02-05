@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-const ConfirmModal = (props) => {
+const MyModal = (props) => {
     return (
         <Modal
             show={props.show}
@@ -11,14 +11,14 @@ const ConfirmModal = (props) => {
             centered
         >
             <Modal.Body >
-                <h4>Are you sure you want to save these changes?</h4>
+                <h4>{props.heading}</h4>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={props.onHide}>CANCEL</Button>
-                <Button variant="info" onClick={props.onSaveChanges}>SAVE CHANGES</Button>
+                <Button variant={props.buttonVariant} onClick={props.onClick}>{props.buttonName}</Button>
             </Modal.Footer>
         </Modal>
     )
 }
 
-export default ConfirmModal;
+export default MyModal;

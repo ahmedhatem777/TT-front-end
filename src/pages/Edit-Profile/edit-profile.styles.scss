@@ -1,8 +1,14 @@
 .edit-profile-row {
-    margin-top: 2rem;
+    // margin-top: 0.5rem;
     min-height: 30vh;
     margin-bottom: 10rem;
     background-color: #1a1a1a;
     padding-top: 1rem;
     padding-bottom: 1rem;
+}
+
+.edit-profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

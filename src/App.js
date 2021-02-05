@@ -5,8 +5,9 @@ import HomePage from './pages/Home/home.page';
 import AboutPage from './pages/About/about.page';
 import Dashboard from './pages/Dashboard/dashboard.page';
 import AddTaskPage from './pages/Add-Task/add-task.page';
+import EditTaskPage from './pages/Edit-Task/edit-task.page';
 import ShowProfilePage from './pages/Show-Profile/show-profile.page';
-import EditProfilePage from './pages/Edit-Profile/edit-profile.page';
+import SettingsPage from './pages/Settings/settings.page';
 import NotFoundPage from './pages/Not-Found/not-found.page';
 import Footer from './components/footer/footer.component';
 import './App.css';
@@ -21,17 +22,19 @@ function App() {
 
             <Route exact path="/" component={HomePage} />
 
-            <Route exact path="/about" component={AboutPage} />
+            <Route path="/about" component={AboutPage} />
 
-            <Route exact path="/dashboard" component={Dashboard} />
+            <Route path="/dashboard" component={Dashboard} />
 
-            <Route exact path="/addtask" component={AddTaskPage} />
+            <Route path="/addtask" component={AddTaskPage} />
 
-            <Route exact path="/showprofile" component={ShowProfilePage} />
+            <Route path="/showprofile" component={ShowProfilePage} />
 
-            <Route exact path="/editprofile" component={EditProfilePage} />
+            <Route path="/edittask" component={EditTaskPage} />
 
-            <Route exact path="/*" component={NotFoundPage} />
+            <Route path="/settings" component={SettingsPage} />
+
+            <Route component={NotFoundPage} />
 
           </Switch>
         </div>

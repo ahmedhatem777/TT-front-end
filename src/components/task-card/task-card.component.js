@@ -4,14 +4,20 @@ import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import './task-card.styles.scss';
 
-const TaskCard = () => {
+const TaskCard = (props) => {
     return (
         <div>
             <Card className="text-white bg-primary mb-3 task-card" >
                 <Card.Header className="task-card-header">
                     {/* <div className="row justify task-card-header-row"> */}
                     <h6 className="text-white">TASK TITLE</h6>
-                    <Button variant="danger" size="sm">DELETE</Button>
+                    <Button 
+                        variant="danger" 
+                        size="sm" 
+                        onClick={props.onClickDelete}
+                    >
+                        DELETE
+                    </Button>
                     {/* </div> */}
 
                 </Card.Header>
@@ -29,7 +35,7 @@ const TaskCard = () => {
 
                 <Card.Footer className="task-card-footer">
                     <p className="text-muted"><b>March 1st, 2020</b></p>
-                    <Button variant="info" size="sm">EDIT</Button>
+                    <Button variant="info" size="sm" onClick={props.onClickEdit}>EDIT</Button>
                 </Card.Footer>
             </Card>
         </div>

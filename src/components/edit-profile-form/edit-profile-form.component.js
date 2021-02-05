@@ -2,7 +2,6 @@ import React from 'react';
 import Figure from 'react-bootstrap/Figure';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import avatar from '../../assets/avatar_placeholder.png';
 import './edit-profile-form.styles.scss';
 
@@ -20,12 +19,11 @@ const EditProfileForm = (props) => {
                                 src={avatar}
                                 thumbnail
                             />
-                            <Figure.Caption>
-                                {/* Nulla vitae elit libero, a pharetra augue mollis interdum. */}
-                                <Form.Group>
-                                    <Form.File className="effen-figure-caption" id="exampleFormControlFile1" />
+                            {/* <Figure.Caption className="effen-figure-caption">
+                                <Form.Group className="d-flex justify-content-center text-center">
+                                    <Form.File id="exampleFormControlFile1" />
                                 </Form.Group>
-                            </Figure.Caption>
+                            </Figure.Caption> */}
                         </Figure>
                     </div>
                 </div>
@@ -61,12 +59,17 @@ const EditProfileForm = (props) => {
                         <Form.Control type="password" placeholder="Confirm new password" />
                     </Form.Group>
 
+                    <Form.Group >
+                        <Form.Label><small><b>PROFILE AVATAR:</b></small></Form.Label>
+                        <Form.File id="exampleFormControlFile1" />
+                    </Form.Group>
+
                     <div>
                         <Button
                             className="submit-edit-button"
                             type="submit"
                             onClick={props.onSubmit}
-                            variant="secondary"
+                            variant="info"
                         >
                             SUBMIT CHANGES
                             </Button>

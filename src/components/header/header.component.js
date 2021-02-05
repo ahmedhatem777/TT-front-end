@@ -31,14 +31,6 @@ class Header extends React.Component {
         clearAllBodyScrollLocks();
     }
 
-    // burgerIcon = (
-    //     <IconContext.Provider value={{ color: "white", size="5em"}}>
-    //         <div>
-    //             <AiOutlineMenu className="burger-menu-icon" />
-    //         </div>
-    //     </IconContext.Provider>
-    // )
-
     render () {
         return (
             this.props.isAuthenticated ?
@@ -94,12 +86,12 @@ class Header extends React.Component {
                                 </NavLink>
 
                                 <NavLink 
-                                    to="/editprofile" 
+                                    to="/settings" 
                                     onClick={this.handleMenuSelection} 
                                     activeClassName="selected"
                                     className="side-nav-link"
                                 >
-                                    <strong className="side-menu-item">EDIT PROFILE</strong>
+                                    <strong className="side-menu-item">SETTINGS</strong>
                                 </NavLink>
 
                                 <NavLink 

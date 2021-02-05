@@ -60,7 +60,7 @@ const ShowProfilePage = (props) => {
                         </div>
 
                         <div className="edit-info-button">
-                            <Button size="sm" onClick={() => props.history.push('/editprofile')}>EDIT INFO</Button>
+                            <Button size="sm" onClick={() => props.history.push('/settings/editprofile')}>EDIT INFO</Button>
                         </div>
                     </div>
                 </div>
