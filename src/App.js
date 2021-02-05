@@ -10,7 +10,7 @@ import ShowProfilePage from './pages/Show-Profile/show-profile.page';
 import SettingsPage from './pages/Settings/settings.page';
 import NotFoundPage from './pages/Not-Found/not-found.page';
 import Footer from './components/footer/footer.component';
-import './App.css';
+import './App.scss';
 
 function App() {
   return (
