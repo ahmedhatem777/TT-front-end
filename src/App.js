@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import AuthRoute from './components/auth-route/auth-route.component';
 import Header from './components/header/header.component';
 import HomePage from './pages/Home/home.page';
 import AboutPage from './pages/About/about.page';
@@ -12,36 +13,52 @@ import NotFoundPage from './pages/Not-Found/not-found.page';
 import Footer from './components/footer/footer.component';
 import './App.scss';
 
-function App() {
-  return (
-    <BrowserRouter>
-      <div className="main-div">
-        <Header />
-        <div className="container-fluid">
-          <Switch>
+class App extends React.Component {
+  
+  state= {
+    loggedIn: false
+  }
 
-            <Route exact path="/" component={HomePage} />
+  setLoggedIn = () => {
+    this.setState({ loggedIn: true });
+  }
 
-            <Route path="/about" component={AboutPage} />
+  unSetLoggedIn = () => {
+    this.setState({ loggedIn: false });
+  }
 
-            <Route path="/dashboard" component={Dashboard} />
+  render() {
+    return (
+      <BrowserRouter>
+        <div className="main-div">
+          <Header loggedIn={this.state.loggedIn} />
+          <div className="container-fluid">
+            <Switch>
 
-            <Route path="/addtask" component={AddTaskPage} />
+              <Route exact path="/" render={ routeProps => <HomePage {...routeProps} loggedIn={this.state.loggedIn} setLoggedIn={this.setLoggedIn} />} />
 
-            <Route path="/showprofile" component={ShowProfilePage} />
+              <Route path="/about" component={AboutPage} />
 
-            <Route path="/edittask" component={EditTaskPage} />
+              <AuthRoute loggedIn={this.state.loggedIn} unSetLoggedIn={this.unSetLoggedIn} path="/dashboard" component={Dashboard} />
 
-            <Route path="/settings" component={SettingsPage} />
+              <AuthRoute loggedIn={this.state.loggedIn} unSetLoggedIn={this.unSetLoggedIn} path="/addtask" component={AddTaskPage} />
 
-            <Route component={NotFoundPage} />
+              <AuthRoute loggedIn={this.state.loggedIn} unSetLoggedIn={this.unSetLoggedIn} path="/showprofile" component={ShowProfilePage} />
 
-          </Switch>
+              <AuthRoute loggedIn={this.state.loggedIn} unSetLoggedIn={this.unSetLoggedIn} path="/edittask" component={EditTaskPage} />
+
+              <AuthRoute loggedIn={this.state.loggedIn} unSetLoggedIn={this.unSetLoggedIn} path="/settings" component={SettingsPage} />
+
+              <Route component={NotFoundPage} />
+
+            </Switch>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
-    </BrowserRouter>    
-  );
+      </BrowserRouter>
+    )
+  }
+  
 }
 
 export default App;

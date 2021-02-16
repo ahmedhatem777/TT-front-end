@@ -1,10 +1,35 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Figure from 'react-bootstrap/Figure';
 import Button from 'react-bootstrap/Button';
 import avatar from '../../assets/avatar_placeholder.png';
+import axios from 'axios';
 import './show-profile.styles.scss';
+axios.defaults.withCredentials = true;
 
 const ShowProfilePage = (props) => {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [age, setAge] = useState(0);
+    const [tasks, setTasks] = useState(0);
+    const [completedTasks, setComTasks] = useState('');
+    const [joinedAt, setJoinedAt] = useState('');
+
+    useEffect( () => {
+        Promise.all([
+            axios.get('http://localhost:4000/users/me'),
+            axios.get('http://localhost:4000/tasks')
+        ])
+        .then( (res) => {
+            setName(res[0].data.name);
+            setEmail(res[0].data.email);
+            setAge(res[0].data.age);
+            setJoinedAt(new Date(res[0].data.createdAt).toDateString());
+            setTasks(res[1].data.length);
+            setComTasks( res[1].data.filter( task => task.completed === true ).length);
+        })
+        .catch( err => console.log(err))
+    }, [])
+ 
     return (
         <div className="container logged-in-container">
             <div className="logged-in-header">
@@ -31,32 +56,32 @@ const ShowProfilePage = (props) => {
                     <div>
                         <div className="my-form-group">
                             <p className="info-label"><small><b>NAME:</b></small></p>
-                            <p>Ahmed Hatem</p>
+                            <p>{name}</p>
                         </div>
 
                         <div className="my-form-group">
                             <p className="info-label"><small><b>EMAIL:</b></small></p>
-                            <p>ahmedhatem777@hotmail.com</p>
+                            <p>{email}</p>
                         </div>
 
                         <div className="my-form-group">
                             <p className="info-label"><small><b>AGE:</b></small></p>
-                            <p>23</p>
+                            <p>{age}</p>
                         </div>
 
                         <div className="my-form-group">
                             <p className="info-label"><small><b>TASKS:</b></small></p>
-                            <p>69</p>
+                            <p>{tasks}</p>
                         </div>
 
                         <div className="my-form-group">
                             <p className="info-label"><small><b>COMPLETED TASKS:</b></small></p>
-                            <p>69</p>
+                            <p>{completedTasks}</p>
                         </div>
 
                         <div className="my-form-group">
                             <p className="info-label"><small><b>JOINED:</b></small></p>
-                            <p>30 October, 1997</p>
+                            <p>{joinedAt}</p>
                         </div>
 
                         <div className="edit-info-button">

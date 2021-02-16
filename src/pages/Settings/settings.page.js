@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import axios from 'axios';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown'
 import LogOutPage from '../Log-Out/log-out.page';
@@ -22,10 +23,17 @@ class SettingsPage extends React.Component {
     }
 
     handleLogOut = () => {
+        axios.post('http://localhost:4000/users/logout')
+        .then( res => console.log(res) )
+        .catch( err => console.log(err) );
+
         this.props.history.push('/');
     }
 
     handleLogOutAll = () => {
+        axios.post('http://localhost:4000/users/logoutAll')
+        .then(res => console.log(res) )
+        .catch(err => console.log(err) );
         this.props.history.push('/');
     }
 
@@ -35,6 +43,10 @@ class SettingsPage extends React.Component {
 
 
     handleDeleteAccount = () => {
+        axios.delete('http://localhost:4000/users/me')
+        .then( res => console.log(res) )
+        .catch( err => console.log(err) );
+
         this.props.history.push('/');
     }
 
@@ -69,6 +81,7 @@ class SettingsPage extends React.Component {
                                             onHide={this.handleHideModal}
                                             onClick={this.handleOpenModal}
                                             logOut={this.handleLogOut} 
+                                            logOutAll={this.handleLogOutAll}
                                         />
                                 } 
                             />

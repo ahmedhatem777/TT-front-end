@@ -4,16 +4,20 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button';
 import TaskCard from '../../components/task-card/task-card.component';
 import Modal from '../../components/modal/modal.component';
+import axios from 'axios';
 import './dashboard.styles.scss';
+axios.defaults.withCredentials = true;
 
 class Dashboard extends React.Component {
     state = {
-        modalShow: false
+        modalShow: false,
+        tasks: []
     }
 
     handleOpenModal = () => {
         this.setState(() => ({ modalShow: true }));
     }
+
     handleHideModal = () => {
         this.setState(() => ({ modalShow: false }));
     }
@@ -26,6 +30,12 @@ class Dashboard extends React.Component {
     handleOnSubmit = (event) => {
         event.preventDefault();
         this.handleOpenModal();
+    }
+    
+    componentDidMount = () => {
+        axios.get('http://localhost:4000/tasks', { withCredentials: true })
+        .then( res => this.setState({ tasks: res.data}) )
+        .catch( err =>  console.log(err) );
     }
 
     render() {
@@ -43,12 +53,25 @@ class Dashboard extends React.Component {
                     </DropdownButton>
                 </div>
 
-                <TaskCard 
-                    onClickEdit={() => this.props.history.push('/edittask')}
-                    onClickDelete={this.handleOpenModal}
-                />
+                {this.state.tasks.length >= 0?
+                    this.state.tasks.map(
+                        task => <TaskCard 
+                                    onClickEdit={() => this.props.history.push('/edittask')}
+                                    onClickDelete={this.handleOpenModal}
+                                    taskTitle={task.description}
+                                    taskDate={task.createdAt}
+                                    completed={task.completed}    
+                                    key={task._id}                
+                                />)
+                : 
+                    <p> 3ebs</p>
+                }
+                
                 <div className="notasks-and-button-div">
-                    {/* <h5 className="no-tasks-heading">You seem to have no tasks at the moment.</h5> */}
+                    {this.state.tasks.length === 0 
+                        && 
+                    <h5 className="no-tasks-heading">You seem to have no tasks at the moment.</h5>}
+
                     <Button
                         className="add-task-button"
                         size="sm"

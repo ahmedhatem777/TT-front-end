@@ -33,51 +33,39 @@ class Header extends React.Component {
 
     render () {
         return (
-            this.props.isAuthenticated ?
-                <Navbar className="navbar navbar-expand-lg navbar-dark bg-primary my-navbar" >
-                    <Navbar.Brand>
-                        <Link to="/" className="text-white">Task-Tracker</Link>
-                    </Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
-                        <Nav>
-                            <Link to="/about" className="text-white">ABOUT</Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Navbar>
-            :
+            !!this.props.loggedIn ?
                 <div>
                     <div className="row no-gutters">
                         <div className="col-3 col-md-1 burger-col">
-                            <Menu 
+                            <Menu
                                 isOpen={this.state.menuOpen}
                                 className="my-menu"
-                                id="burger-menu" 
+                                id="burger-menu"
                                 disableAutoFocus
-                                onOpen={this.handleOnOpen} 
+                                onOpen={this.handleOnOpen}
                                 onClose={this.handleOnClose}
                             >
-                                <NavLink 
-                                    to="/dashboard" 
-                                    onClick={this.handleMenuSelection} 
-                                    exact 
+                                <NavLink
+                                    to="/dashboard"
+                                    onClick={this.handleMenuSelection}
+                                    exact
                                     activeClassName="selected"
                                     className="side-nav-link"
                                 >
                                     <strong className="side-menu-item">DASHBOARD</strong>
                                 </NavLink>
 
-                                <NavLink 
-                                    to="/addtask" 
-                                    onClick={this.handleMenuSelection} 
+                                <NavLink
+                                    to="/addtask"
+                                    onClick={this.handleMenuSelection}
                                     activeClassName="selected"
                                     className="side-nav-link"
                                 >
                                     <strong className="side-menu-item">ADD NEW TASK</strong>
                                 </NavLink>
 
-                                <NavLink 
-                                    to="/showprofile" 
+                                <NavLink
+                                    to="/showprofile"
                                     onClick={this.handleMenuSelection}
                                     activeClassName="selected"
                                     className="side-nav-link"
@@ -85,18 +73,18 @@ class Header extends React.Component {
                                     <strong className="side-menu-item">SHOW PROFILE</strong>
                                 </NavLink>
 
-                                <NavLink 
-                                    to="/settings" 
-                                    onClick={this.handleMenuSelection} 
+                                <NavLink
+                                    to="/settings"
+                                    onClick={this.handleMenuSelection}
                                     activeClassName="selected"
                                     className="side-nav-link"
                                 >
                                     <strong className="side-menu-item">SETTINGS</strong>
                                 </NavLink>
 
-                                <NavLink 
-                                    to="/about" 
-                                    onClick={this.handleMenuSelection} 
+                                <NavLink
+                                    to="/about"
+                                    onClick={this.handleMenuSelection}
                                     activeClassName="selected"
                                     className="side-nav-link"
                                 >
@@ -117,8 +105,21 @@ class Header extends React.Component {
                                 </Navbar.Collapse>
                             </Navbar>
                         </div>
-                    </div>    
+                    </div>
                 </div>
+            :
+                <Navbar className="navbar navbar-expand-lg navbar-dark bg-primary my-navbar" >
+                        <Navbar.Brand>
+                            <Link to="/" className="text-white">Task-Tracker</Link>
+                        </Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
+                            <Nav>
+                                <Link to="/about" className="text-white">ABOUT</Link>
+                            </Nav>
+                        </Navbar.Collapse>
+                </Navbar>
+                
         )
     }
 }

@@ -11,7 +11,7 @@ const LogOutPage = (props) => {
                     size="lg" 
                     variant="warning" 
                     className="btn-block log-out-button"
-                    onClick={props.onClick}
+                    onClick={props.logOut}
                 >
                     LOG OUT
                 </Button>
@@ -31,7 +31,7 @@ const LogOutPage = (props) => {
             <Modal
                 show={props.modalShow}
                 onHide={props.onHide}
-                onClick={props.logOut}
+                onClick={props.logOutAll}
                 heading={"Are you sure you want to Log out?"}
                 buttonVariant={"warning"}
                 buttonName={"LOG OUT"}
