@@ -45,7 +45,7 @@ class App extends React.Component {
 
               <AuthRoute loggedIn={this.state.loggedIn} unSetLoggedIn={this.unSetLoggedIn} path="/showprofile" component={ShowProfilePage} />
 
-              <AuthRoute loggedIn={this.state.loggedIn} unSetLoggedIn={this.unSetLoggedIn} path="/edittask" component={EditTaskPage} />
+              <AuthRoute loggedIn={this.state.loggedIn} unSetLoggedIn={this.unSetLoggedIn} path="/edittask/:id" component={EditTaskPage} />
 
               <AuthRoute loggedIn={this.state.loggedIn} unSetLoggedIn={this.unSetLoggedIn} path="/settings" component={SettingsPage} />
 

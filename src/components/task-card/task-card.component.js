@@ -44,7 +44,7 @@ const TaskCard = (props) => {
 
                 <Card.Footer className="task-card-footer">
                     <p className="text-muted"><b>{new Date(props.taskDate).toDateString()}</b></p>
-                    <Button variant="info" size="sm" onClick={props.onClickEdit}>
+                    <Button variant="info" size="sm" onClick={() => props.onClickEdit(props.id)}>
                         <IconContext.Provider value={{ size: "2em" }}>
                             <AiOutlineEdit />
                         </IconContext.Provider>
