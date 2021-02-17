@@ -19,12 +19,12 @@ class HomePage extends React.Component{
 
     handleSignUp = (name, email, password) => {
         axios.post('http://localhost:4000/users', {name, email, password })
-            .then( res => {
-                console.log(res);
-                this.props.setLoggedIn();
-                this.props.history.push('/dashboard');
-            })
-            .catch( err => console.log(err));
+        .then( res => {
+            console.log(res);
+            this.props.setLoggedIn();
+            this.props.history.push('/dashboard');
+        })
+        .catch( err => console.log(err));
     }
 
     render() {
@@ -37,7 +37,6 @@ class HomePage extends React.Component{
                     <SignUpForm handleSignUp={this.handleSignUp} />
                 </div>
             </div>
-
         )   
     }
 }

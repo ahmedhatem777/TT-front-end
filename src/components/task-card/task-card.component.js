@@ -17,7 +17,7 @@ const TaskCard = (props) => {
                     <Button 
                         variant="danger" 
                         size="sm" 
-                        onClick={props.onClickDelete}
+                        onClick={() => props.onClickDelete(props.id)}
                     >
                         <IconContext.Provider value={{size: "2em" }}>
                             <AiOutlineDelete />

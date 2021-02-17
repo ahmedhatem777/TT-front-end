@@ -11,10 +11,12 @@ axios.defaults.withCredentials = true;
 class Dashboard extends React.Component {
     state = {
         modalShow: false,
-        tasks: []
+        tasks: [],
+        taskToDelete: undefined
     }
 
-    handleOpenModal = () => {
+    handleOpenModal = taskID => {
+        this.setState(() => ({ taskToDelete: taskID}));
         this.setState(() => ({ modalShow: true }));
     }
 
@@ -23,17 +25,25 @@ class Dashboard extends React.Component {
     }
 
     handleDeleteTask = () => {
-        this.props.history.push('/dashboard');
+        axios.delete(`http://localhost:4000/tasks/${this.state.taskToDelete}`)
+        .then( res => {
+            console.log(res);
+            this.setState( (prevState) => 
+                ({tasks: prevState.tasks.filter( task => task._id !== this.state.taskToDelete)})
+            )
+            this.setState( () => ({tasksToDelete: undefined}));
+        })
+        .catch( err => console.log(err));
         this.handleHideModal();
     }
 
-    handleOnSubmit = (event) => {
+    handleOnSubmit = event => {
         event.preventDefault();
         this.handleOpenModal();
     }
     
     componentDidMount = () => {
-        axios.get('http://localhost:4000/tasks', { withCredentials: true })
+        axios.get('http://localhost:4000/tasks')
         .then( res => this.setState({ tasks: res.data}) )
         .catch( err =>  console.log(err) );
     }
@@ -61,7 +71,8 @@ class Dashboard extends React.Component {
                                     taskTitle={task.description}
                                     taskDate={task.createdAt}
                                     completed={task.completed}    
-                                    key={task._id}                
+                                    key={task._id}      
+                                    id={task._id}          
                                 />)
                 : 
                     <p> 3ebs</p>
