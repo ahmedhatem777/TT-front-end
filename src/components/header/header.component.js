@@ -33,7 +33,7 @@ class Header extends React.Component {
 
     render () {
         return (
-            !!this.props.loggedIn ?
+            this.props.loggedIn ?
                 <div>
                     <div className="row no-gutters">
                         <div className="col-3 col-md-1 burger-col">
@@ -95,14 +95,9 @@ class Header extends React.Component {
                         <div className="col-9 col-md-11 header-col">
                             <Navbar className="navbar navbar-expand-lg navbar-dark bg-primary my-navbar" >
                                 <Navbar.Brand>
-                                    <Link to="/" className="text-white">Task-Tracker</Link>
+                                    <Link to="/dashboard" className="text-white">Task-Tracker</Link>
                                 </Navbar.Brand>
                                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                                <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
-                                    {/* <Nav>
-                                        <Link to="/about" className="text-white">ABOUT</Link>
-                                    </Nav> */}
-                                </Navbar.Collapse>
                             </Navbar>
                         </div>
                     </div>

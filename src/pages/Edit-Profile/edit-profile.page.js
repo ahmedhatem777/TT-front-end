@@ -1,7 +1,8 @@
 import React from 'react';
-import Modal from '../../components/modal/modal.component';
 import EditProfileForm from '../../components/edit-profile-form/edit-profile-form.component';
+import axios from 'axios';
 import './edit-profile.styles.scss';
+axios.defaults.withCredentials = true;
 
 class EditProfilePage extends React.Component {
     handleOnSubmit = (event) => {
@@ -14,9 +15,6 @@ class EditProfilePage extends React.Component {
             <div className="container edit-profile-container">
                 <EditProfileForm
                     onSubmit={this.handleOnSubmit}
-                />
-
-                <Modal
                     show={this.props.modalShow}
                     onHide={this.props.onHide}
                     onClick={this.props.handleSaveChanges}
