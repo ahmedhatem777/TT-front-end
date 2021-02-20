@@ -5,7 +5,8 @@ import './edit-profile.styles.scss';
 axios.defaults.withCredentials = true;
 
 class EditProfilePage extends React.Component {
-    handleOnSubmit = (event) => {
+
+    handleOnSubmit = event => {
         event.preventDefault();
         this.props.onClick();
     }
@@ -16,6 +17,8 @@ class EditProfilePage extends React.Component {
                 <EditProfileForm
                     onSubmit={this.handleOnSubmit}
                     show={this.props.modalShow}
+                    editAlert={this.props.editAlert}
+                    editButtonLoad={this.props.editButtonLoad}
                     onHide={this.props.onHide}
                     onClick={this.props.handleSaveChanges}
                     heading={"Are you sure you want to submit these changes?"}

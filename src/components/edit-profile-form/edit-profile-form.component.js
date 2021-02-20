@@ -3,7 +3,8 @@ import Modal from '../modal/modal.component';
 import Figure from 'react-bootstrap/Figure';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert'
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 import avatar from '../../assets/avatar_placeholder.png';
 import axios from 'axios';
 import './edit-profile-form.styles.scss';
@@ -20,13 +21,13 @@ const EditProfileForm = (props) => {
 
     useEffect( () => {
         axios.get('http://localhost:4000/users/me')
-        .then(({ data }) => {
-            setName(data._doc.name);
-            setAge(data._doc.age);
-            setEmail(data._doc.email);
-            setAvatar(data.hasAvatar);
-        })
-        .catch( err => console.log(err) );
+            .then(({ data }) => {
+                setName(data._doc.name);
+                setAge(data._doc.age);
+                setEmail(data._doc.email);
+                setAvatar(data.hasAvatar);
+            })
+            .catch( err => console.log(err) );
     }, [])
 
     return (
@@ -42,7 +43,7 @@ const EditProfileForm = (props) => {
                                 height={200}
                                 alt="200x200"
                                 src={userAvatar ? 'http://localhost:4000/users/me/avatar' : avatar}
-                                roundedCircle
+                                rounded
                             />
                             {
                                 userAvatar &&
@@ -67,8 +68,10 @@ const EditProfileForm = (props) => {
                     <Form.Group>
                         <Form.Label><small><b>NAME:</b></small></Form.Label>
                         <Form.Control 
+                            required
                             value={name}
-                            onChange={ e => setName(e.target.value) } 
+                            maxLength="64"
+                            onChange={e => setName(e.target.value) } 
                         />
                     </Form.Group>
 
@@ -77,6 +80,7 @@ const EditProfileForm = (props) => {
                         <Form.Control 
                             required
                             type="email" 
+                            maxLength="254"
                             value={email}
                             onChange={e => setEmail(e.target.value)} 
 
@@ -85,8 +89,10 @@ const EditProfileForm = (props) => {
 
                     <Form.Group>
                         <Form.Label><small><b>AGE:</b></small></Form.Label>
-                        <Form.Control 
+                        <Form.Control
+                            required
                             type="number"
+                            max="123"
                             value={age} 
                             onChange={e => setAge(e.target.value)} 
                         />
@@ -96,18 +102,32 @@ const EditProfileForm = (props) => {
                         <Form.Label><small><b>NEW PASSWORD:</b></small></Form.Label>
                         <Form.Control 
                             type="password" 
-                            minLength="7" 
+                            minLength="7"
+                            maxLength="64"
                             placeholder="New password" 
                             value={password} 
-                            onChange={e => setPassword(e.target.value)} 
+                            onChange={
+                                e => {
+                                    setPassword(e.target.value);
+                                    const passCon = document.getElementById('password-confirmation');
+                                    if (passCon.value !== password) {
+                                        passCon.setCustomValidity(`Passwords don't match!`);
+                                    }
+                                    else {
+                                        passCon.setCustomValidity('')
+                                    } 
+                                }
+                            } 
                         />
                     </Form.Group>
 
                     <Form.Group >
                         <Form.Label><small><b>CONFIRM NEW PASSWORD:</b></small></Form.Label>
                         <Form.Control
-                            required={password !== ''? true : false}
-                            type="password"  
+                            required={password !== '' ? true : false}
+                            type="password" 
+                            id="password-confirmation"
+                            maxLength="64"
                             placeholder="Confirm new password" 
                             onChange={
                                 e => {
@@ -122,7 +142,7 @@ const EditProfileForm = (props) => {
 
                     <Form.Group >
                         <Form.Label><small><b>PROFILE AVATAR:</b></small></Form.Label>
-                            <div className="avatar-upload-group">
+                            <div >
                             <Form.File
                                 id="exampleFormControlFile1"
                                 accept="image/png, image/jpeg, image/jpg"
@@ -141,22 +161,35 @@ const EditProfileForm = (props) => {
                                 } 
                             />
                             {
-                            !!uploadResponse &&
-                                <Alert size="sm" variant="info">
-                                        <small>{uploadResponse}</small>
-                                </Alert>
+                                !!uploadResponse &&
+                                    <Alert size="sm" variant="info" className="avatar-upload-group">
+                                        {uploadResponse}
+                                    </Alert>
                             }
                         </div>
                         
                     </Form.Group>
 
                     <div>
+                        {
+                            !!props.editAlert &&
+                                <Alert variant="danger" className="text-center">
+                                    {props.editAlert}
+                                </Alert>
+                        }
                         <Button
                             className="submit-edit-button"
                             type="submit"
                             variant="info"
                         >
-                            SUBMIT CHANGES
+                                {
+                                    props.editButtonLoad ?
+                                        <Spinner animation="border" role="status">
+                                            <span className="sr-only">Loading...</span>
+                                        </Spinner>
+                                        :
+                                        'SUBMIT CHANGES'
+                                }
                         </Button>
                     </div>
 
@@ -164,7 +197,6 @@ const EditProfileForm = (props) => {
             </div>
         </Form>  
         
-
                 <Modal
                     show={props.show}
                     onHide={props.onHide}

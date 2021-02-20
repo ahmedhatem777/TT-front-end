@@ -2,6 +2,8 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 import { IconContext } from 'react-icons';
 import { GoChevronLeft } from "react-icons/go";
 import axios from 'axios';
@@ -12,22 +14,25 @@ class EditTaskPage extends React.Component {
     state = {
         title: '',
         description: '',
-        completed: undefined
+        completed: undefined,
+        editTaskAlert: '',
+        editButtonLoad: false
     }
 
     componentDidMount = () => {
         axios.get(`http://localhost:4000/tasks/${this.props.match.params.id}`)
-        .then( ({data}) => {
-            this.setState( () => ({
-                title: data.title,
-                description: data.description,
-                completed: data.completed
-            }))
-        })
-        .catch( err => console.log(err) )
+            .then( ({data}) => {
+                this.setState( () => ({
+                    title: data.title,
+                    description: data.description,
+                    completed: data.completed
+                }))
+            })
+            .catch( err => console.log(err) );
     }
 
     handleSubmitEdit = () => {
+        this.setState(() => ({ editButtonLoad: true }) );
         const title = this.state.title;
         const description = this.state.description;
         const completed = this.state.completed;
@@ -35,7 +40,11 @@ class EditTaskPage extends React.Component {
         axios.patch(`http://localhost:4000/tasks/${this.props.match.params.id}`, 
         {title, description, completed})
             .then( res => this.props.history.push('/dashboard'))
-            .catch(err => console.log(err));
+            .catch(err => { 
+                this.setState(() => ({ editTaskAlert: err.response.data, editButtonLoad: false }) );
+                // push to home when error code is 401 "unauthorized"
+                // this.props.history.push('/');
+            })
     }
 
     render() {
@@ -57,19 +66,23 @@ class EditTaskPage extends React.Component {
                             <Form.Group >
                                 <Form.Label><small>TITLE</small></Form.Label>
                                 <Form.Control 
+                                    required
+                                    maxLength="100"
                                     value={this.state.title}
-                                    onChange={ e => this.setState( () => ({title: e.target.value})) }
+                                    onChange={e => this.setState(() => ({title: e.target.value}) )}
                                 />
                             </Form.Group>
 
                             <Form.Group >
                                 <Form.Label><small>DESCRIPTION</small></Form.Label>
                                 <Form.Control
+                                    required
                                     as="textarea"
                                     rows={3}
+                                    maxLength="360"
+                                    className="description-text-area"
                                     value={this.state.description}
-                                    onChange={e => this.setState(() => ({ description: e.target.value }))}
-
+                                    onChange={e => this.setState(() => ({ description: e.target.value }) )}
                                 />
                             </Form.Group>
 
@@ -83,21 +96,36 @@ class EditTaskPage extends React.Component {
                                         e => { 
                                             this.setState(() => (
                                                 { completed: (e.target.value === "Completed") ? true : false}
-                                            ))}
-                                    }
-                                    >
+                                            ))
+                                        }
+                                    }>
                                     <option>Completed</option>
                                     <option>Not Done Yet</option>
                                 </Form.Control>
                             </Form.Group>
 
                             <div>
+                                {!!this.state.editTaskAlert &&
+                                    <Alert variant="danger" className="text-center">
+                                    {this.state.editTaskAlert}
+                                    </Alert>
+                                }
                                 <Button
                                     className="form-submit-button"
                                     variant="info"
                                     type="submit"
-                                >EDIT TASK</Button>
+                                >
+                                    {
+                                        this.state.editButtonLoad ?
+                                            <Spinner animation="border" role="status">
+                                                <span className="sr-only">Loading...</span>
+                                            </Spinner>
+                                        :
+                                            'EDIT TASK'
+                                    }
+                                </Button>
                             </div>
+
                         </Form>
                     </Card.Body>
                 </Card>

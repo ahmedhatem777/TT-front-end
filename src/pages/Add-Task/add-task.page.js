@@ -3,6 +3,10 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
+import { IconContext } from 'react-icons';
+import { GoChevronLeft } from "react-icons/go";
 import './add-task.styles.scss';
 axios.defaults.withCredentials = true;
 
@@ -10,27 +14,37 @@ class AddTaskPage extends React.Component {
     state = {
         title: '',
         description: '',
-        taskState: 'Not Done Yet'
+        taskState: 'Not Done Yet',
+        addTaskAlert: '',
+        addButtonLoad: false
     }
 
     handleAddTask = event => {
+        event.preventDefault();
+        this.setState( () => ({addButtonLoad: true}) );
         const title = this.state.title;
         const description = this.state.description;
         const completed = this.state.taskState === 'Not Done Yet'? false : true;
 
-        event.preventDefault();
-        console.log(this.state, completed)
         axios.post('http://localhost:4000/tasks', { title, description, completed })
-        .then(res => { console.log(res); this.props.history.push('/dashboard'); })
-        .catch( err => {console.log(err); this.props.history.push('/'); });
+            .then( res =>  this.props.history.push('/dashboard') )
+            .catch( err => {
+                this.setState(() => ({ addTaskAlert: err.response.data, addButtonLoad: false}) );
+                // push to home when error code is 401 "unauthorized"
+                // this.props.history.push('/'); 
+            })
     }
 
     render() {
         return (
             <div className="container logged-in-container">
-
                 <div className="logged-in-header">
                     <h3>ADD NEW TASK:</h3>
+                    <Button onClick={() => this.props.history.goBack()}>
+                        <IconContext.Provider value={{ size: "2em" }}>
+                            <GoChevronLeft />
+                        </IconContext.Provider>
+                    </Button>
                 </div>
 
                 <Card className="text-white bg-primary add-task-card">
@@ -40,6 +54,7 @@ class AddTaskPage extends React.Component {
                                 <Form.Label><small>TITLE</small></Form.Label>
                                 <Form.Control 
                                     required
+                                    maxLength="100"
                                     placeholder="New Task Title" 
                                     value={this.state.title}
                                     onChange={e => this.setState(() => ({ title: e.target.value }) )}
@@ -51,7 +66,10 @@ class AddTaskPage extends React.Component {
                                 <Form.Control
                                     required
                                     as="textarea"
-                                    rows={3} placeholder="New Task Description" 
+                                    rows={3} 
+                                    maxLength="360"
+                                    placeholder="New Task Description" 
+                                    className="description-text-area"
                                     value={this.state.description}
                                     onChange={e => this.setState(() => ({ description: e.target.value }))}
                                 />
@@ -71,12 +89,24 @@ class AddTaskPage extends React.Component {
                             </Form.Group>
 
                             <div>
+                                {!!this.state.addTaskAlert &&
+                                    <Alert variant="danger" className="text-center">
+                                        {this.state.addTaskAlert}
+                                    </Alert>
+                                }
                                 <Button
                                     className="form-submit-button"
                                     variant="secondary"
                                     type="submit"
                                 >
-                                    ADD TASK
+                                    {
+                                        this.state.addButtonLoad ?
+                                            <Spinner animation="border" role="status">
+                                                <span className="sr-only">Loading...</span>
+                                            </Spinner>
+                                        :
+                                            'ADD TASK'
+                                    }
                                 </Button>
                             </div>
                         </Form>

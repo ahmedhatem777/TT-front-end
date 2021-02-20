@@ -11,7 +11,9 @@ import './settings.styles.scss';
 
 class SettingsPage extends React.Component {
     state = {
-        modalShow: false
+        modalShow: false, 
+        editAlert: '',
+        editButtonLoad: false,
     }
 
     handleOpenModal = () => {
@@ -38,6 +40,7 @@ class SettingsPage extends React.Component {
     }
 
     handleSaveChanges = (name, email, age, password, deleteAvatar) => {
+        this.setState(() => ({ editButtonLoad: true}) );
         const info = password !== ''? { name, email, age, password}: {name, email, age}
         if(deleteAvatar){
             Promise.all([
@@ -45,20 +48,19 @@ class SettingsPage extends React.Component {
                 axios.delete('http://localhost:4000/users/me/avatar'),
             ])
                 .then(res => this.props.history.push('/showprofile') )
-                .catch( err => console.log(err))
+                .catch(err => this.setState(() => ({ editAlert: err.response.data, editButtonLoad: false })) )
         }
         else {
             axios.patch('http://localhost:4000/users/me', info)
                 .then(res => this.props.history.push('/showprofile'))
-                .catch(err => console.log(err));
-            ;
+                .catch(err => this.setState(() => ({ editAlert: err.response.data, editButtonLoad: false })) )
         }
     }
 
     handleDeleteAccount = () => {
         axios.delete('http://localhost:4000/users/me')
-        .then( res => console.log(res) )
-        .catch( err => console.log(err) );
+            .then( res => console.log(res) )
+            .catch( err => console.log(err) );
 
         this.props.history.push('/');
     }
@@ -105,6 +107,8 @@ class SettingsPage extends React.Component {
                                     () =>
                                         <EditProfilePage
                                             modalShow={this.state.modalShow}
+                                            editAlert={this.state.editAlert}
+                                            editButtonLoad={this.state.editButtonLoad}
                                             onHide={this.handleHideModal}
                                             onClick={this.handleOpenModal}
                                             handleSaveChanges={this.handleSaveChanges}

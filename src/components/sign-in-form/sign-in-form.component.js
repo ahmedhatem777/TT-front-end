@@ -14,16 +14,18 @@ const SignInForm = (props) => {
         <Card className="card text-white bg-primary sign-in-card">
             <Card.Header> <strong>SIGN IN</strong></Card.Header>
             <Card.Body>
-                <Form onSubmit={ e => { 
-                    e.preventDefault();
-                    props.handleSignIn(email, password);
-                }
+                <Form onSubmit={ 
+                    e => { 
+                        e.preventDefault();
+                        props.handleSignIn(email, password);
+                    }
                 }>
                     <div className="form-group">
                         <label> <small>EMAIL</small></label>
                         <input
                             required
                             type="email"
+                            maxLength="254"
                             className="form-control"
                             aria-describedby="emailHelp"
                             placeholder="Enter email"
@@ -37,6 +39,7 @@ const SignInForm = (props) => {
                         <input
                             required
                             minLength="7"
+                            maxLength="64"
                             type="password"
                             className="form-control"
                             placeholder="Password"

@@ -16,35 +16,46 @@ class HomePage extends React.Component{
     handleSignIn = (email, password) => {
         this.setState( () => ({signInButtonLoad: true}));
         axios.post('http://localhost:4000/users/login/', {email, password})
-        .then( res => {
-            // console.log(res);
-            this.props.setLoggedIn();
-            this.props.history.push('/dashboard');
-        })
-        .catch( err => {
-            this.setState( () => ({signInAlert: err.response.data.toString()}));
-            this.setState(() => ({ signInButtonLoad: false }));
-        })
+            .then( res => {
+                this.props.setLoggedIn();
+                this.props.history.push('/dashboard');
+            })
+            .catch( err => {
+                this.setState( () => ({signInAlert: err.response.data}));
+                this.setState(() => ({ signInButtonLoad: false }));
+            })
     }
 
     handleSignUp = (name, email, password) => {
+        this.setState(() => ({ signUpButtonLoad: true }));
         axios.post('http://localhost:4000/users/', {name, email, password })
-        .then( res => {
-            console.log(res);
-            this.props.setLoggedIn();
-            this.props.history.push('/dashboard');
-        })
-        .catch( err => console.log(err));
+            .then( res => {
+                this.props.setLoggedIn();
+                this.props.history.push('/dashboard');
+            })
+            .catch(err => {
+                console.log(err.response)
+                this.setState(() => ({ signUpAlert: err.response.data}));
+                this.setState(() => ({ signUpButtonLoad: false }));
+            })
     }
 
     render() {
         return (
             <div className="row justify-content-around homepage-row">
                 <div className="col-md-4">
-                    <SignInForm handleSignIn={this.handleSignIn} signInAlert={this.state.signInAlert} signInButtonLoad={this.state.signInButtonLoad} />
+                    <SignInForm 
+                        handleSignIn={this.handleSignIn} 
+                        signInAlert={this.state.signInAlert} 
+                        signInButtonLoad={this.state.signInButtonLoad} 
+                    />
                 </div>
                 <div className="col-md-4 sign-up-column">
-                    <SignUpForm handleSignUp={this.handleSignUp} />
+                    <SignUpForm 
+                        handleSignUp={this.handleSignUp}
+                        signUpAlert={this.state.signUpAlert}
+                        signUpButtonLoad={this.state.signUpButtonLoad} 
+                    />
                 </div>
             </div>
         )   

@@ -28,10 +28,8 @@ const TaskCard = (props) => {
 
                 </Card.Header>
                 <Card.Body>
-                    {/* <Card.Title></Card.Title> */}
                     <Card.Text>
                         {props.taskDescription}
-                        With supporting text below as a natural lead-in to additional content.
                     </Card.Text>
 
                     {props.completed ?

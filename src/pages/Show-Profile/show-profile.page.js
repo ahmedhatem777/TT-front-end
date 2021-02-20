@@ -47,7 +47,7 @@ const ShowProfilePage = (props) => {
                             height={200}
                             alt="200x200"
                             src={ userAvatar ? 'http://localhost:4000/users/me/avatar' : avatar}
-                            roundedCircle 
+                            rounded  
                         />
                         <Figure.Caption>
                             {/* Nulla vitae elit libero, a pharetra augue mollis interdum. */}
