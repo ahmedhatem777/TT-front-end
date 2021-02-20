@@ -12,7 +12,9 @@ class Dashboard extends React.Component {
     state = {
         modalShow: false,
         tasks: [],
-        taskToDelete: undefined
+        taskToDelete: undefined,
+        sortBy: '',
+        completed: ''
     }
 
     handleOpenModal = taskID => {
@@ -44,8 +46,16 @@ class Dashboard extends React.Component {
     
     componentDidMount = () => {
         axios.get('http://localhost:4000/tasks')
-        .then( res => this.setState({ tasks: res.data}) )
+        .then( res => this.setState(() => ({ tasks: res.data})) )
         .catch( err =>  console.log(err) );
+    }
+
+    componentDidUpdate = (prevProps, prevState) => {
+        if(prevState.sortBy !== this.state.sortBy || prevState.completed !== this.state.completed) {
+            axios.get(`http://localhost:4000/tasks?sortBy=${this.state.sortBy}&completed=${this.state.completed}`)
+            .then(res => this.setState(() => ({ tasks: res.data })))
+            .catch(err => console.log(err));
+        }
     }
 
     render() {
@@ -55,11 +65,11 @@ class Dashboard extends React.Component {
                     <h3>TASKS:</h3>
                     
                     <DropdownButton id="dropdown-basic-button" title="SORT BY">
-                        <Dropdown.Item onSelect={() => { console.log("Creation Date (Ascending)") }} >Creation Date (Ascending)</Dropdown.Item>
-                        <Dropdown.Item onSelect={() => { console.log("Creation Date (Descending)") }} >Creation Date (Descending)</Dropdown.Item>
-                        <Dropdown.Item onSelect={() => { console.log("SHOW ALL") }} >All</Dropdown.Item>
-                        <Dropdown.Item onSelect={() => { console.log("SHOW COMPLETED") }} >Completed Only</Dropdown.Item>
-                        <Dropdown.Item onSelect={() => { console.log("SHOW INCOMPLETE") }} >Incompleted Only</Dropdown.Item>
+                        <Dropdown.Item onSelect={() => { this.setState(() => ({ sortBy: 'createdAt:asc'})) }} >Creation Date (Ascending)</Dropdown.Item>
+                        <Dropdown.Item onSelect={() => { this.setState(() => ({ sortBy: 'createdAt:desc' })) }} >Creation Date (Descending)</Dropdown.Item>
+                        <Dropdown.Item onSelect={() => { this.setState(() => ({ completed: '' })) }} >All</Dropdown.Item>
+                        <Dropdown.Item onSelect={() => { this.setState(() => ({ completed: 'true' })) }} >Completed Only</Dropdown.Item>
+                        <Dropdown.Item onSelect={() => { this.setState(() => ({ completed: 'false' })) }} >Incomplete Only</Dropdown.Item>
                     </DropdownButton>
                 </div>
 
