@@ -30,7 +30,7 @@ const TaskCard = (props) => {
                 <Card.Body>
                     {/* <Card.Title></Card.Title> */}
                     <Card.Text>
-                        {props.taskTitle}
+                        {props.taskDescription}
                         With supporting text below as a natural lead-in to additional content.
                     </Card.Text>
 
@@ -54,7 +54,5 @@ const TaskCard = (props) => {
         </div>
     )
 }
-
-
 
 export default TaskCard;

@@ -6,19 +6,29 @@ import './home.styles.scss';
 axios.defaults.withCredentials = true;
 
 class HomePage extends React.Component{
+    state = {
+        signInAlert: '',
+        signUpAlert: '',
+        signInButtonLoad: false,
+        signUpButtonLoad: false
+    }
 
     handleSignIn = (email, password) => {
-        axios.post('http://localhost:4000/users/login', {email, password})
+        this.setState( () => ({signInButtonLoad: true}));
+        axios.post('http://localhost:4000/users/login/', {email, password})
         .then( res => {
-            console.log(res);
+            // console.log(res);
             this.props.setLoggedIn();
             this.props.history.push('/dashboard');
         })
-        .catch( err => console.log(err));
+        .catch( err => {
+            this.setState( () => ({signInAlert: err.response.data.toString()}));
+            this.setState(() => ({ signInButtonLoad: false }));
+        })
     }
 
     handleSignUp = (name, email, password) => {
-        axios.post('http://localhost:4000/users', {name, email, password })
+        axios.post('http://localhost:4000/users/', {name, email, password })
         .then( res => {
             console.log(res);
             this.props.setLoggedIn();
@@ -31,7 +41,7 @@ class HomePage extends React.Component{
         return (
             <div className="row justify-content-around homepage-row">
                 <div className="col-md-4">
-                    <SignInForm handleSignIn={this.handleSignIn} />
+                    <SignInForm handleSignIn={this.handleSignIn} signInAlert={this.state.signInAlert} signInButtonLoad={this.state.signInButtonLoad} />
                 </div>
                 <div className="col-md-4 sign-up-column">
                     <SignUpForm handleSignUp={this.handleSignUp} />

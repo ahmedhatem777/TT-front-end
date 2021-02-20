@@ -13,17 +13,20 @@ const ShowProfilePage = (props) => {
     const [tasks, setTasks] = useState(0);
     const [completedTasks, setComTasks] = useState('');
     const [joinedAt, setJoinedAt] = useState('');
+    const [userAvatar, setAvatar] = useState(false);
 
     useEffect( () => {
         Promise.all([
             axios.get('http://localhost:4000/users/me'),
             axios.get('http://localhost:4000/tasks')
         ])
-        .then( (res) => {
-            setName(res[0].data.name);
-            setEmail(res[0].data.email);
-            setAge(res[0].data.age);
-            setJoinedAt(new Date(res[0].data.createdAt).toDateString());
+        .then( res => {
+            console.log(res[0].data)
+            setName(res[0].data._doc.name);
+            setEmail(res[0].data._doc.email);
+            setAge(res[0].data._doc.age);
+            setJoinedAt(new Date(res[0].data._doc.createdAt).toDateString());
+            setAvatar(res[0].data.hasAvatar);
             setTasks(res[1].data.length);
             setComTasks( res[1].data.filter( task => task.completed === true ).length);
         })
@@ -43,8 +46,8 @@ const ShowProfilePage = (props) => {
                             width={200}
                             height={200}
                             alt="200x200"
-                            src={avatar}
-                            thumbnail
+                            src={ userAvatar ? 'http://localhost:4000/users/me/avatar' : avatar}
+                            roundedCircle 
                         />
                         <Figure.Caption>
                             {/* Nulla vitae elit libero, a pharetra augue mollis interdum. */}

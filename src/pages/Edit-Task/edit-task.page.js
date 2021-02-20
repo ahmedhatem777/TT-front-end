@@ -10,6 +10,7 @@ axios.defaults.withCredentials = true;
 
 class EditTaskPage extends React.Component {
     state = {
+        title: '',
         description: '',
         completed: undefined
     }
@@ -17,20 +18,26 @@ class EditTaskPage extends React.Component {
     componentDidMount = () => {
         axios.get(`http://localhost:4000/tasks/${this.props.match.params.id}`)
         .then( ({data}) => {
-            this.setState( () => ({ description: data.description, completed: data.completed}));
-            console.log(this.state)
+            this.setState( () => ({
+                title: data.title,
+                description: data.description,
+                completed: data.completed
+            }))
         })
         .catch( err => console.log(err) )
     }
 
     handleSubmitEdit = () => {
-        const completed = this.state.completed;
+        const title = this.state.title;
         const description = this.state.description;
+        const completed = this.state.completed;
+
         axios.patch(`http://localhost:4000/tasks/${this.props.match.params.id}`, 
-        {description, completed})
-        .then(res => this.props.history.push('/dashboard'))
-        .catch(err => console.log(err))
+        {title, description, completed})
+            .then( res => this.props.history.push('/dashboard'))
+            .catch(err => console.log(err));
     }
+
     render() {
         return (
             <div className="container logged-in-container">
@@ -49,7 +56,10 @@ class EditTaskPage extends React.Component {
                         <Form onSubmit={e => { e.preventDefault(); this.handleSubmitEdit(); }}>
                             <Form.Group >
                                 <Form.Label><small>TITLE</small></Form.Label>
-                                <Form.Control defaultValue={this.state.description} />
+                                <Form.Control 
+                                    value={this.state.title}
+                                    onChange={ e => this.setState( () => ({title: e.target.value})) }
+                                />
                             </Form.Group>
 
                             <Form.Group >
@@ -57,8 +67,10 @@ class EditTaskPage extends React.Component {
                                 <Form.Control
                                     as="textarea"
                                     rows={3}
-                                    defaultValue="Existant Task Description existent task description existent task description
-                            existent task description existent task description existent task description" />
+                                    value={this.state.description}
+                                    onChange={e => this.setState(() => ({ description: e.target.value }))}
+
+                                />
                             </Form.Group>
 
                             <Form.Group>
@@ -67,11 +79,11 @@ class EditTaskPage extends React.Component {
                                     as="select" 
                                     value={this.state.completed ? "Completed" : "Not Done Yet"} 
                                     className="mr-sm-2"
-                                    onChange={e => { 
-                                        this.setState(() => 
-                                            ({ completed: e.target.value === "Completed" ? true : false}
-                                            ))
-                                        }
+                                    onChange={
+                                        e => { 
+                                            this.setState(() => (
+                                                { completed: (e.target.value === "Completed") ? true : false}
+                                            ))}
                                     }
                                     >
                                     <option>Completed</option>
@@ -89,7 +101,6 @@ class EditTaskPage extends React.Component {
                         </Form>
                     </Card.Body>
                 </Card>
-
             </div>
         )
     }

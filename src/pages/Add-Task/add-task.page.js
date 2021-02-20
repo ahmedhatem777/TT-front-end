@@ -8,18 +8,21 @@ axios.defaults.withCredentials = true;
 
 class AddTaskPage extends React.Component {
     state = {
+        title: '',
         description: '',
         taskState: 'Not Done Yet'
     }
 
     handleAddTask = event => {
-        const completed = this.state.taskState === 'Not Done Yet'? false : true;
+        const title = this.state.title;
         const description = this.state.description;
+        const completed = this.state.taskState === 'Not Done Yet'? false : true;
+
         event.preventDefault();
         console.log(this.state, completed)
-        axios.post('http://localhost:4000/tasks', { description, completed })
-            .then(res => { console.log(res); this.props.history.push('/dashboard'); })
-            .catch( err => {console.log(err); this.props.history.push('/'); });
+        axios.post('http://localhost:4000/tasks', { title, description, completed })
+        .then(res => { console.log(res); this.props.history.push('/dashboard'); })
+        .catch( err => {console.log(err); this.props.history.push('/'); });
     }
 
     render() {
@@ -32,26 +35,32 @@ class AddTaskPage extends React.Component {
 
                 <Card className="text-white bg-primary add-task-card">
                     <Card.Body>
-                        <Form>
+                        <Form onSubmit={this.handleAddTask}>
                             <Form.Group >
                                 <Form.Label><small>TITLE</small></Form.Label>
                                 <Form.Control 
+                                    required
                                     placeholder="New Task Title" 
-                                    value={this.state.description}
-                                    onChange={ e => this.setState( () => ({ description: e.target.value }) )}
+                                    value={this.state.title}
+                                    onChange={e => this.setState(() => ({ title: e.target.value }) )}
                                 />
                             </Form.Group>
 
                             <Form.Group >
                                 <Form.Label><small>DESCRIPTION</small></Form.Label>
-                                <Form.Control as="textarea" rows={3} placeholder="New Task Description" />
+                                <Form.Control
+                                    required
+                                    as="textarea"
+                                    rows={3} placeholder="New Task Description" 
+                                    value={this.state.description}
+                                    onChange={e => this.setState(() => ({ description: e.target.value }))}
+                                />
                             </Form.Group>
 
                             <Form.Group>
                                 <Form.Label><small>STATE</small></Form.Label>
                                 <Form.Control 
                                     as="select" 
-                                    defaultValue="Not Done Yet"
                                     className="mr-sm-2"
                                     value={this.state.taskState}
                                     onChange={e => this.setState(() => ({ taskState: e.target.value}) )}
@@ -66,7 +75,6 @@ class AddTaskPage extends React.Component {
                                     className="form-submit-button"
                                     variant="secondary"
                                     type="submit"
-                                    onClick={this.handleAddTask}
                                 >
                                     ADD TASK
                                 </Button>

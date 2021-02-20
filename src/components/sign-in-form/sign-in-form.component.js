@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 import './sign-in-form.styles.scss';
 
 const SignInForm = (props) => {
@@ -12,7 +14,11 @@ const SignInForm = (props) => {
         <Card className="card text-white bg-primary sign-in-card">
             <Card.Header> <strong>SIGN IN</strong></Card.Header>
             <Card.Body>
-                <Form onSubmit={ e => { e.preventDefault(); props.handleSignIn(email, password) }}>
+                <Form onSubmit={ e => { 
+                    e.preventDefault();
+                    props.handleSignIn(email, password);
+                }
+                }>
                     <div className="form-group">
                         <label> <small>EMAIL</small></label>
                         <input
@@ -40,12 +46,23 @@ const SignInForm = (props) => {
                     </div>
 
                     <div>
+                        {!!props.signInAlert && 
+                        <Alert variant="danger" className="text-center">
+                            {props.signInAlert}
+                        </Alert>
+                        }
                         <Button
                             className="form-submit-button"
                             variant="secondary"
                             type="submit"
                         >
-                            SIGN IN
+                            {props.signInButtonLoad ?
+                                <Spinner animation="border" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </Spinner>
+                            :
+                                'SIGN IN'
+                            }
                         </Button>
                     </div>
                 </Form>

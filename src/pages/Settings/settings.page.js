@@ -37,12 +37,22 @@ class SettingsPage extends React.Component {
         this.props.history.push('/');
     }
 
-    handleSaveChanges = (name, email, age, password) => {
+    handleSaveChanges = (name, email, age, password, deleteAvatar) => {
         const info = password !== ''? { name, email, age, password}: {name, email, age}
-        axios.patch('http://localhost:4000/users/me', info)
-        .then( res => console.log(res))
-        .catch( err => console.log(err));
-        this.props.history.push('/showprofile');
+        if(deleteAvatar){
+            Promise.all([
+                axios.patch('http://localhost:4000/users/me', info),
+                axios.delete('http://localhost:4000/users/me/avatar'),
+            ])
+                .then(res => this.props.history.push('/showprofile') )
+                .catch( err => console.log(err))
+        }
+        else {
+            axios.patch('http://localhost:4000/users/me', info)
+                .then(res => this.props.history.push('/showprofile'))
+                .catch(err => console.log(err));
+            ;
+        }
     }
 
     handleDeleteAccount = () => {

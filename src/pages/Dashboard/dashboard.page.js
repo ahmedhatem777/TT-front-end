@@ -63,12 +63,14 @@ class Dashboard extends React.Component {
                     </DropdownButton>
                 </div>
 
-                {this.state.tasks.length >= 0 &&
+                {
+                this.state.tasks.length >= 0 &&
                     this.state.tasks.map(
                         task => <TaskCard 
                                     onClickEdit={(id) => this.props.history.push(`/edittask/${id}`)}
                                     onClickDelete={this.handleOpenModal}
-                                    taskTitle={task.description}
+                                    taskTitle={task.title}
+                                    taskDescription={task.description}
                                     taskDate={task.createdAt}
                                     completed={task.completed}    
                                     key={task._id}      

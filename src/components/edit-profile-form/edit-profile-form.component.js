@@ -3,6 +3,7 @@ import Modal from '../modal/modal.component';
 import Figure from 'react-bootstrap/Figure';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert'
 import avatar from '../../assets/avatar_placeholder.png';
 import axios from 'axios';
 import './edit-profile-form.styles.scss';
@@ -13,13 +14,17 @@ const EditProfileForm = (props) => {
     const [email, setEmail] = useState('');
     const [age, setAge] = useState(0);
     const [password, setPassword] = useState('');
+    const [userAvatar, setAvatar] = useState(false);
+    const [uploadResponse, setUploadRes] = useState('');
+    const [deleteAvatar, setDeleteAvatar] = useState(false);
 
     useEffect( () => {
         axios.get('http://localhost:4000/users/me')
-        .then( ({data}) => {
-            setName(data.name);
-            setAge(data.age);
-            setEmail(data.email);
+        .then(({ data }) => {
+            setName(data._doc.name);
+            setAge(data._doc.age);
+            setEmail(data._doc.email);
+            setAvatar(data.hasAvatar);
         })
         .catch( err => console.log(err) );
     }, [])
@@ -32,17 +37,28 @@ const EditProfileForm = (props) => {
                     <div>
                         <Figure className="effen-figure">
                             <Figure.Image
+                                disabled
                                 width={200}
                                 height={200}
                                 alt="200x200"
-                                src={avatar}
-                                thumbnail
+                                src={userAvatar ? 'http://localhost:4000/users/me/avatar' : avatar}
+                                roundedCircle
                             />
-                            {/* <Figure.Caption className="effen-figure-caption">
-                                <Form.Group className="d-flex justify-content-center text-center">
-                                    <Form.File id="exampleFormControlFile1" />
-                                </Form.Group>
-                            </Figure.Caption> */}
+                            {
+                                userAvatar &&
+                                    <Figure.Caption className="effen-figure-caption">
+                                        <Form.Group className="d-flex justify-content-center text-center">
+                                            <Button 
+                                                size="sm" 
+                                                variant="secondary"
+                                                onClick={() => setDeleteAvatar(!deleteAvatar)}
+                                            >
+                                                <small><b>{deleteAvatar ? 'Undo' : 'Remove Avatar'}</b></small>
+                                            </Button>
+                                        </Form.Group>
+                                    </Figure.Caption>
+                            }
+                            
                         </Figure>
                     </div>
                 </div>
@@ -59,6 +75,7 @@ const EditProfileForm = (props) => {
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label><small><b>EMAIL:</b></small></Form.Label>
                         <Form.Control 
+                            required
                             type="email" 
                             value={email}
                             onChange={e => setEmail(e.target.value)} 
@@ -105,7 +122,32 @@ const EditProfileForm = (props) => {
 
                     <Form.Group >
                         <Form.Label><small><b>PROFILE AVATAR:</b></small></Form.Label>
-                        <Form.File id="exampleFormControlFile1" />
+                            <div className="avatar-upload-group">
+                            <Form.File
+                                id="exampleFormControlFile1"
+                                accept="image/png, image/jpeg, image/jpg"
+                                onChange={e => {
+                                    let form_data = new FormData();
+                                    form_data.append('avatar', e.target.files[0]);
+                                    axios.post('http://localhost:4000/users/me/avatar', form_data,
+                                        {
+                                            headers: {
+                                                'content-type': 'multipart/form-data'
+                                            }
+                                        })
+                                        .then(res => setUploadRes(res.data))
+                                        .catch(err => setUploadRes(err.response.data.error));
+                                    }
+                                } 
+                            />
+                            {
+                            !!uploadResponse &&
+                                <Alert size="sm" variant="info">
+                                        <small>{uploadResponse}</small>
+                                </Alert>
+                            }
+                        </div>
+                        
                     </Form.Group>
 
                     <div>
@@ -126,7 +168,7 @@ const EditProfileForm = (props) => {
                 <Modal
                     show={props.show}
                     onHide={props.onHide}
-                    onClick={() => props.onClick(name, email, age, password)}
+                    onClick={() => props.onClick(name, email, age, password, deleteAvatar)}
                     heading={props.heading}
                     buttonVariant={props.buttonVariant}
                     buttonName={props.buttonName}

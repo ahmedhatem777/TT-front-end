@@ -6,9 +6,11 @@
     text-align: center;
 }
 
-// .effen-figure-caption {
-//     margin-left: 1em;
-// }
+.avatar-upload-group {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
 
 .submit-edit-button {
     width: 100%;
