@@ -4,6 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button';
 import TaskCard from '../../components/task-card/task-card.component';
 import Modal from '../../components/modal/modal.component';
+import UserContext from '../../userContext';
 import axios from 'axios';
 import './dashboard.styles.scss';
 axios.defaults.withCredentials = true;
@@ -46,15 +47,29 @@ class Dashboard extends React.Component {
     
     componentDidMount = () => {
         axios.get('http://localhost:4000/tasks')
-        .then( res => this.setState(() => ({ tasks: res.data})) )
-        .catch( err =>  console.log(err) );
+            .then( res => this.setState( () => ({ tasks: res.data }) ))
+            .catch(err => {
+                if (err.response) {
+                    err.response.status === 401 && this.context.setLoggedIn(false);
+                }
+                else {
+                    console.log(err);
+                }
+            })
     }
 
     componentDidUpdate = (prevProps, prevState) => {
         if(prevState.sortBy !== this.state.sortBy || prevState.completed !== this.state.completed) {
             axios.get(`http://localhost:4000/tasks?sortBy=${this.state.sortBy}&completed=${this.state.completed}`)
-            .then(res => this.setState(() => ({ tasks: res.data })))
-            .catch(err => console.log(err));
+                .then(res => this.setState( () => ({ tasks: res.data }) ))
+                .catch(err => {
+                    if (err.response) {
+                        err.response.status === 401 && this.context.setLoggedIn(false);
+                    }
+                    else {
+                        console.log(err);
+                    }
+                })
         }
     }
 
@@ -116,5 +131,7 @@ class Dashboard extends React.Component {
         )
     }
 }
+
+Dashboard.contextType = UserContext;
 
 export default Dashboard;

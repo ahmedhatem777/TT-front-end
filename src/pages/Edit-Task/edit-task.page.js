@@ -6,6 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import { IconContext } from 'react-icons';
 import { GoChevronLeft } from "react-icons/go";
+import UserContext from '../../userContext';
 import axios from 'axios';
 import './edit-task.styles.scss';
 axios.defaults.withCredentials = true;
@@ -28,11 +29,17 @@ class EditTaskPage extends React.Component {
                     completed: data.completed
                 }))
             })
-            .catch( err => console.log(err) );
+            .catch(err => {
+                if (err.response) {
+                    err.response.status === 401 ? this.context.setLoggedIn(false)
+                        :
+                    this.setState( () => ({ editTaskAlert: err.response.data }));
+                }
+            })
     }
 
     handleSubmitEdit = () => {
-        this.setState(() => ({ editButtonLoad: true }) );
+        this.setState( () => ({ editButtonLoad: true }) );
         const title = this.state.title;
         const description = this.state.description;
         const completed = this.state.completed;
@@ -41,9 +48,11 @@ class EditTaskPage extends React.Component {
         {title, description, completed})
             .then( res => this.props.history.push('/dashboard'))
             .catch(err => { 
-                this.setState(() => ({ editTaskAlert: err.response.data, editButtonLoad: false }) );
-                // push to home when error code is 401 "unauthorized"
-                // this.props.history.push('/');
+                if(err.response) {
+                    err.response.status === 401 ? this.context.setLoggedIn(false) 
+                        :
+                    this.setState( () => ({ editTaskAlert: err.response.data, editButtonLoad: false }) );
+                }
             })
     }
 
@@ -133,5 +142,7 @@ class EditTaskPage extends React.Component {
         )
     }
 }
+
+EditTaskPage.contextType = UserContext;
 
 export default EditTaskPage;

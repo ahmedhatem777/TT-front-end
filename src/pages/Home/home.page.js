@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import SignInForm from '../../components/sign-in-form/sign-in-form.component';
 import SignUpForm from '../../components/sign-up-form/sign-up-form.component';
+import UserContext from '../../userContext';
 import './home.styles.scss';
 axios.defaults.withCredentials = true;
 
@@ -17,12 +18,13 @@ class HomePage extends React.Component{
         this.setState( () => ({signInButtonLoad: true}));
         axios.post('http://localhost:4000/users/login/', {email, password})
             .then( res => {
-                this.props.setLoggedIn();
+                this.context.setLoggedIn(true);
                 this.props.history.push('/dashboard');
             })
             .catch( err => {
-                this.setState( () => ({signInAlert: err.response.data}));
+                if (err.response) this.setState(() => ({ signInAlert: err.response.data }));
                 this.setState(() => ({ signInButtonLoad: false }));
+                console.log(err);
             })
     }
 
@@ -30,12 +32,11 @@ class HomePage extends React.Component{
         this.setState(() => ({ signUpButtonLoad: true }));
         axios.post('http://localhost:4000/users/', {name, email, password })
             .then( res => {
-                this.props.setLoggedIn();
+                this.context.setLoggedIn(true);
                 this.props.history.push('/dashboard');
             })
             .catch(err => {
-                console.log(err.response)
-                this.setState(() => ({ signUpAlert: err.response.data}));
+                if (err.response) this.setState(() => ({ signUpAlert: err.response.data }));
                 this.setState(() => ({ signUpButtonLoad: false }));
             })
     }
@@ -61,5 +62,7 @@ class HomePage extends React.Component{
         )   
     }
 }
+
+HomePage.contextType = UserContext;
 
 export default HomePage;

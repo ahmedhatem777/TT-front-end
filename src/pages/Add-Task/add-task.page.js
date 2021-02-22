@@ -6,7 +6,8 @@ import axios from 'axios';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import { IconContext } from 'react-icons';
-import { GoChevronLeft } from "react-icons/go";
+import { GoChevronLeft } from 'react-icons/go';
+import UserContext from '../../userContext';
 import './add-task.styles.scss';
 axios.defaults.withCredentials = true;
 
@@ -21,7 +22,7 @@ class AddTaskPage extends React.Component {
 
     handleAddTask = event => {
         event.preventDefault();
-        this.setState( () => ({addButtonLoad: true}) );
+        this.setState( () => ({ addButtonLoad: true }) );
         const title = this.state.title;
         const description = this.state.description;
         const completed = this.state.taskState === 'Not Done Yet'? false : true;
@@ -29,9 +30,14 @@ class AddTaskPage extends React.Component {
         axios.post('http://localhost:4000/tasks', { title, description, completed })
             .then( res =>  this.props.history.push('/dashboard') )
             .catch( err => {
-                this.setState(() => ({ addTaskAlert: err.response.data, addButtonLoad: false}) );
-                // push to home when error code is 401 "unauthorized"
-                // this.props.history.push('/'); 
+                if(err.response) {
+                    err.response.status === 401? this.context.setLoggedIn(false) 
+                        : 
+                    this.setState(() => ({ addTaskAlert: err.response.data, addButtonLoad: false }));
+                }
+                else { 
+                    console.log(err);
+                }
             })
     }
 
@@ -116,5 +122,7 @@ class AddTaskPage extends React.Component {
         )
     }
 }
+
+AddTaskPage.contextType = UserContext;
 
 export default AddTaskPage;

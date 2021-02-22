@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from '../../components/modal/modal.component';
 import './delete-account.styles.scss';
 
-const DeleteAccountPage = (props) => {
+const DeleteAccountPage = props => {
     return (
         <div className="row justify-content-around">
             <div className="col-12">

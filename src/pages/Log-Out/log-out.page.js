@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from '../../components/modal/modal.component';
 import './log-out.styles.scss';
 
-const LogOutPage = (props) => {
+const LogOutPage = props => {
     return (
         <div className="row justify-content-around">
             <div className="col-12 col-md-6 col-lg-6">
@@ -25,7 +25,8 @@ const LogOutPage = (props) => {
                     onClick={props.onClick}
 
                 >
-                    LOG OUT OF ALL DEVICES</Button>
+                    LOG OUT OF ALL DEVICES
+                </Button>
             </div>
 
             <Modal

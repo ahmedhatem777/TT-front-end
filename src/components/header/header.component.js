@@ -4,6 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Link, NavLink } from 'react-router-dom';
 import { slide as Menu } from 'react-burger-menu';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import UserContext from '../../userContext';
 import './header.styles.scss';
 
 class Header extends React.Component {
@@ -11,7 +12,7 @@ class Header extends React.Component {
         menuOpen: false
     }
 
-    showSettings(event) {
+    showSettings = event => {
         event.preventDefault();
     }
 
@@ -33,7 +34,7 @@ class Header extends React.Component {
 
     render () {
         return (
-            this.props.loggedIn ?
+            this.context.loggedIn ?
                 <div>
                     <div className="row no-gutters">
                         <div className="col-3 col-md-1 burger-col">
@@ -113,16 +114,11 @@ class Header extends React.Component {
                                 <Link to="/about" className="text-white">ABOUT</Link>
                             </Nav>
                         </Navbar.Collapse>
-                </Navbar>
-                
+                </Navbar>  
         )
     }
 }
 
-export default Header;
+Header.contextType = UserContext;
 
-//DASHBOARD
-//ADD NEW TASK
-//SHOW PROFILE
-//EDIT PROFILE
-//ABOUT
+export default Header;

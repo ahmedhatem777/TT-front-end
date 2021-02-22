@@ -7,6 +7,7 @@ import LogOutPage from '../Log-Out/log-out.page';
 import EditProfilePage from '../Edit-Profile/edit-profile.page';
 import DeleteAccountPage from '../Delete-Account/delete-account.page';
 import NotFoundPage from '../Not-Found/not-found.page';
+import UserContext from '../../userContext';
 import './settings.styles.scss';
 
 class SettingsPage extends React.Component {
@@ -26,43 +27,61 @@ class SettingsPage extends React.Component {
 
     handleLogOut = () => {
         axios.post('http://localhost:4000/users/logout')
-        .then( res => console.log(res) )
-        .catch( err => console.log(err) );
-
-        this.props.history.push('/');
+            .then( res => this.context.setLoggedIn(false) )
+            .catch( err => this.context.setLoggedIn(false) );
     }
 
     handleLogOutAll = () => {
         axios.post('http://localhost:4000/users/logoutAll')
-        .then(res => console.log(res) )
-        .catch(err => console.log(err) );
-        this.props.history.push('/');
+            .then( res => this.context.setLoggedIn(false) )
+            .catch( err => this.context.setLoggedIn(false));
     }
 
     handleSaveChanges = (name, email, age, password, deleteAvatar) => {
         this.setState(() => ({ editButtonLoad: true}) );
-        const info = password !== ''? { name, email, age, password}: {name, email, age}
-        if(deleteAvatar){
+        const info = password !== ''? { name, email, age, password}: {name, email, age};
+
+        if(deleteAvatar) {
             Promise.all([
                 axios.patch('http://localhost:4000/users/me', info),
-                axios.delete('http://localhost:4000/users/me/avatar'),
+                axios.delete('http://localhost:4000/users/me/avatar')
             ])
-                .then(res => this.props.history.push('/showprofile') )
-                .catch(err => this.setState(() => ({ editAlert: err.response.data, editButtonLoad: false })) )
+                .then( res => this.props.history.push('/showprofile') )
+                .catch( err => {
+                    if(err.response) {
+                        err.response.status === 401 ? this.context.setLoggedIn(false)
+                            :
+                        this.setState( () => ({ editAlert: err.response.data, editButtonLoad: false })); 
+                    }
+                    else {
+                        console.log(err);
+                    }
+                })
         }
         else {
             axios.patch('http://localhost:4000/users/me', info)
                 .then(res => this.props.history.push('/showprofile'))
-                .catch(err => this.setState(() => ({ editAlert: err.response.data, editButtonLoad: false })) )
+                .catch(err => {
+                    if (err.response) {
+                        err.response.status === 401 ? this.context.setLoggedIn(false)
+                            :
+                            this.setState(() => ({ editAlert: err.response.data, editButtonLoad: false }));
+                    }
+                    else {
+                        console.log(err);
+                    }
+                })
         }
     }
 
     handleDeleteAccount = () => {
         axios.delete('http://localhost:4000/users/me')
-            .then( res => console.log(res) )
-            .catch( err => console.log(err) );
-
-        this.props.history.push('/');
+            .then(res => this.props.history.push('/') )
+            .catch(err => {
+                err.response? err.response.status === 401 && this.context.setLoggedIn(false)
+                    :
+                console.log(err);
+            })
     }
 
     render() {
@@ -136,5 +155,7 @@ class SettingsPage extends React.Component {
         )
     }
 }
+
+SettingsPage.contextType = UserContext;
 
 export default SettingsPage;

@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Figure from 'react-bootstrap/Figure';
 import Button from 'react-bootstrap/Button';
 import avatar from '../../assets/avatar_placeholder.png';
+import UserContext from '../../userContext';
 import axios from 'axios';
 import './show-profile.styles.scss';
 axios.defaults.withCredentials = true;
@@ -14,24 +15,29 @@ const ShowProfilePage = (props) => {
     const [completedTasks, setComTasks] = useState('');
     const [joinedAt, setJoinedAt] = useState('');
     const [userAvatar, setAvatar] = useState(false);
+    const user = useContext(UserContext);
 
     useEffect( () => {
         Promise.all([
             axios.get('http://localhost:4000/users/me'),
             axios.get('http://localhost:4000/tasks')
         ])
-        .then( res => {
-            console.log(res[0].data)
-            setName(res[0].data._doc.name);
-            setEmail(res[0].data._doc.email);
-            setAge(res[0].data._doc.age);
-            setJoinedAt(new Date(res[0].data._doc.createdAt).toDateString());
-            setAvatar(res[0].data.hasAvatar);
-            setTasks(res[1].data.length);
-            setComTasks( res[1].data.filter( task => task.completed === true ).length);
-        })
-        .catch( err => console.log(err))
-    }, [])
+            .then( res => {
+                console.log(res[0].data)
+                setName(res[0].data._doc.name);
+                setEmail(res[0].data._doc.email);
+                setAge(res[0].data._doc.age);
+                setJoinedAt(new Date(res[0].data._doc.createdAt).toDateString());
+                setAvatar(res[0].data.hasAvatar);
+                setTasks(res[1].data.length);
+                setComTasks( res[1].data.filter( task => task.completed === true ).length );
+            })
+            .catch(err => {
+                err.response ? err.response.status === 401 && user.setLoggedIn(false)
+                    :
+                console.log(err);
+            })
+    }, [user])
  
     return (
         <div className="container logged-in-container">
