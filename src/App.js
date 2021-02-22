@@ -16,6 +16,7 @@ import './App.scss';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
+
     return (
       <BrowserRouter>
         <div className="main-div">

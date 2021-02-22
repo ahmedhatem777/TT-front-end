@@ -3,6 +3,7 @@ import axios from 'axios';
 import SignInForm from '../../components/sign-in-form/sign-in-form.component';
 import SignUpForm from '../../components/sign-up-form/sign-up-form.component';
 import UserContext from '../../userContext';
+import { Redirect } from 'react-router-dom';
 import './home.styles.scss';
 axios.defaults.withCredentials = true;
 
@@ -41,24 +42,37 @@ class HomePage extends React.Component{
             })
     }
 
+    componentDidMount = () => {
+        axios.get('http://localhost:4000/users/cookie')
+            .then(res => {
+                console.log(res)
+                this.context.setLoggedIn(true);
+                //this.props.history.push('/dashboard');
+            })
+            .catch( err => console.log(err));
+    }
+
     render() {
         return (
-            <div className="row justify-content-around homepage-row">
-                <div className="col-md-4">
-                    <SignInForm 
-                        handleSignIn={this.handleSignIn} 
-                        signInAlert={this.state.signInAlert} 
-                        signInButtonLoad={this.state.signInButtonLoad} 
-                    />
+            this.context.loggedIn ?
+                 <Redirect to="/dashboard"/>
+            :
+                <div className="row justify-content-around homepage-row">
+                    <div className="col-md-4">
+                        <SignInForm 
+                            handleSignIn={this.handleSignIn} 
+                            signInAlert={this.state.signInAlert} 
+                            signInButtonLoad={this.state.signInButtonLoad} 
+                        />
+                    </div>
+                    <div className="col-md-4 sign-up-column">
+                        <SignUpForm 
+                            handleSignUp={this.handleSignUp}
+                            signUpAlert={this.state.signUpAlert}
+                            signUpButtonLoad={this.state.signUpButtonLoad} 
+                        />
+                    </div>
                 </div>
-                <div className="col-md-4 sign-up-column">
-                    <SignUpForm 
-                        handleSignUp={this.handleSignUp}
-                        signUpAlert={this.state.signUpAlert}
-                        signUpButtonLoad={this.state.signUpButtonLoad} 
-                    />
-                </div>
-            </div>
         )   
     }
 }
