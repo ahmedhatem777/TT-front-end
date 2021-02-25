@@ -43,7 +43,7 @@ class HomePage extends React.Component{
     }
 
     componentDidMount = () => {
-        axios.get('https://ttapi.ahmed-hatem.com/cookie')
+        axios.get('https://ttapi.ahmed-hatem.com/users/cookie')
             .then(res => {
                 console.log(res)
                 this.context.setLoggedIn(true);
