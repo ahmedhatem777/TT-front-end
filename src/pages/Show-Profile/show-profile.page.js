@@ -19,8 +19,8 @@ const ShowProfilePage = (props) => {
 
     useEffect( () => {
         Promise.all([
-            axios.get('http://localhost:4000/users/me'),
-            axios.get('http://localhost:4000/tasks')
+            axios.get('https://ttapi.ahmed-hatem.com/users/me'),
+            axios.get('https://ttapi.ahmed-hatem.com/tasks')
         ])
             .then( res => {
                 console.log(res[0].data)
@@ -52,7 +52,7 @@ const ShowProfilePage = (props) => {
                             width={200}
                             height={200}
                             alt="200x200"
-                            src={ userAvatar ? 'http://localhost:4000/users/me/avatar' : avatar}
+                            src={userAvatar ? 'https://ttapi.ahmed-hatem.com/users/me/avatar' : avatar}
                             rounded  
                         />
                         <Figure.Caption>

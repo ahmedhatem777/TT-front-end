@@ -26,13 +26,13 @@ class SettingsPage extends React.Component {
     }
 
     handleLogOut = () => {
-        axios.post('http://localhost:4000/users/logout')
+        axios.post('https://ttapi.ahmed-hatem.com/users/logout')
             .then( res => this.context.setLoggedIn(false) )
             .catch( err => this.context.setLoggedIn(false) );
     }
 
     handleLogOutAll = () => {
-        axios.post('http://localhost:4000/users/logoutAll')
+        axios.post('https://ttapi.ahmed-hatem.com/users/logoutAll')
             .then( res => this.context.setLoggedIn(false) )
             .catch( err => this.context.setLoggedIn(false));
     }
@@ -43,8 +43,8 @@ class SettingsPage extends React.Component {
 
         if(deleteAvatar) {
             Promise.all([
-                axios.patch('http://localhost:4000/users/me', info),
-                axios.delete('http://localhost:4000/users/me/avatar')
+                axios.patch('https://ttapi.ahmed-hatem.com/users/me', info),
+                axios.delete('https://ttapi.ahmed-hatem.com/users/me/avatar')
             ])
                 .then( res => this.props.history.push('/showprofile') )
                 .catch( err => {
@@ -59,7 +59,7 @@ class SettingsPage extends React.Component {
                 })
         }
         else {
-            axios.patch('http://localhost:4000/users/me', info)
+            axios.patch('https://ttapi.ahmed-hatem.com/users/me', info)
                 .then(res => this.props.history.push('/showprofile'))
                 .catch(err => {
                     if (err.response) {
@@ -75,7 +75,7 @@ class SettingsPage extends React.Component {
     }
 
     handleDeleteAccount = () => {
-        axios.delete('http://localhost:4000/users/me')
+        axios.delete('https://ttapi.ahmed-hatem.com/users/me')
             .then(res => this.props.history.push('/') )
             .catch(err => {
                 err.response? err.response.status === 401 && this.context.setLoggedIn(false)

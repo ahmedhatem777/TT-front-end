@@ -17,7 +17,7 @@ class HomePage extends React.Component{
 
     handleSignIn = (email, password) => {
         this.setState( () => ({signInButtonLoad: true}));
-        axios.post('http://localhost:4000/users/login/', {email, password})
+        axios.post('https://ttapi.ahmed-hatem.com/users/login/', {email, password})
             .then( res => {
                 this.context.setLoggedIn(true);
                 this.props.history.push('/dashboard');
@@ -31,7 +31,7 @@ class HomePage extends React.Component{
 
     handleSignUp = (name, email, password) => {
         this.setState(() => ({ signUpButtonLoad: true }));
-        axios.post('http://localhost:4000/users/', {name, email, password })
+        axios.post('https://ttapi.ahmed-hatem.com/users/', {name, email, password })
             .then( res => {
                 this.context.setLoggedIn(true);
                 this.props.history.push('/dashboard');
@@ -43,7 +43,7 @@ class HomePage extends React.Component{
     }
 
     componentDidMount = () => {
-        axios.get('http://localhost:4000/users/cookie')
+        axios.get('https://ttapi.ahmed-hatem.com/cookie')
             .then(res => {
                 console.log(res)
                 this.context.setLoggedIn(true);

@@ -28,7 +28,7 @@ class Dashboard extends React.Component {
     }
 
     handleDeleteTask = () => {
-        axios.delete(`http://localhost:4000/tasks/${this.state.taskToDelete}`)
+        axios.delete(`https://ttapi.ahmed-hatem.com/tasks/${this.state.taskToDelete}`)
         .then( res => {
             console.log(res);
             this.setState( (prevState) => 
@@ -46,7 +46,7 @@ class Dashboard extends React.Component {
     }
     
     componentDidMount = () => {
-        axios.get('http://localhost:4000/tasks')
+        axios.get('https://ttapi.ahmed-hatem.com/tasks')
             .then( res => this.setState( () => ({ tasks: res.data }) ))
             .catch(err => {
                 if (err.response) {
@@ -60,7 +60,7 @@ class Dashboard extends React.Component {
 
     componentDidUpdate = (prevProps, prevState) => {
         if(prevState.sortBy !== this.state.sortBy || prevState.completed !== this.state.completed) {
-            axios.get(`http://localhost:4000/tasks?sortBy=${this.state.sortBy}&completed=${this.state.completed}`)
+            axios.get(`https://ttapi.ahmed-hatem.com/tasks?sortBy=${this.state.sortBy}&completed=${this.state.completed}`)
                 .then(res => this.setState( () => ({ tasks: res.data }) ))
                 .catch(err => {
                     if (err.response) {

@@ -20,7 +20,7 @@ const EditProfileForm = (props) => {
     const [deleteAvatar, setDeleteAvatar] = useState(false);
 
     useEffect( () => {
-        axios.get('http://localhost:4000/users/me')
+        axios.get('https://ttapi.ahmed-hatem.com/users/me')
             .then(({ data }) => {
                 setName(data._doc.name);
                 setAge(data._doc.age);
@@ -42,7 +42,7 @@ const EditProfileForm = (props) => {
                                 width={200}
                                 height={200}
                                 alt="200x200"
-                                src={userAvatar ? 'http://localhost:4000/users/me/avatar' : avatar}
+                                    src={userAvatar ? 'https://ttapi.ahmed-hatem.com/users/me/avatar' : avatar}
                                 rounded
                             />
                             {
@@ -149,7 +149,7 @@ const EditProfileForm = (props) => {
                                 onChange={e => {
                                     let form_data = new FormData();
                                     form_data.append('avatar', e.target.files[0]);
-                                    axios.post('http://localhost:4000/users/me/avatar', form_data,
+                                    axios.post('https://ttapi.ahmed-hatem.com/users/me/avatar', form_data,
                                         {
                                             headers: {
                                                 'content-type': 'multipart/form-data'
