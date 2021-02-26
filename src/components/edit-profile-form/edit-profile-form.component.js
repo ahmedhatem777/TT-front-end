@@ -165,7 +165,9 @@ const EditProfileForm = props => {
                                             }
                                         })
                                         .then(res => setUploadRes(res.data))
-                                        .catch(err => setUploadRes(err.response.data.error));
+                                        .catch(err => {
+                                            err.response? setUploadRes(err.response.data.error) : setUploadRes('Upload Failed, try again!');
+                                        })
                                     }
                                 } 
                             />
