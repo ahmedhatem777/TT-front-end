@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -7,7 +8,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { IconContext } from 'react-icons';
 import { GoChevronLeft } from "react-icons/go";
 import UserContext from '../../userContext';
-import axios from 'axios';
+import SyncLoader from "react-spinners/SyncLoader";
 import './edit-task.styles.scss';
 axios.defaults.withCredentials = true;
 
@@ -17,7 +18,8 @@ class EditTaskPage extends React.Component {
         description: '',
         completed: undefined,
         editTaskAlert: '',
-        editButtonLoad: false
+        editButtonLoad: false,
+        fetchingTask: true
     }
 
     componentDidMount = () => {
@@ -26,14 +28,15 @@ class EditTaskPage extends React.Component {
                 this.setState( () => ({
                     title: data.title,
                     description: data.description,
-                    completed: data.completed
+                    completed: data.completed,
+                    fetchingTask: false
                 }))
             })
             .catch(err => {
                 if (err.response) {
                     err.response.status === 401 ? this.context.setLoggedIn(false)
                         :
-                    this.setState( () => ({ editTaskAlert: err.response.data }));
+                    this.setState(() => ({ editTaskAlert: err.response.data, fetchingTask: false }));
                 }
             })
     }
@@ -57,6 +60,11 @@ class EditTaskPage extends React.Component {
     }
 
     render() {
+        if (this.state.fetchingTask) return (
+            <div className="loading-info">
+                <SyncLoader color={'black'} loading={true} size={15} />
+            </div>
+        ) 
         return (
             <div className="container logged-in-container">
 

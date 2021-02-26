@@ -1,11 +1,12 @@
 import React from 'react';
+import axios from 'axios';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button';
 import TaskCard from '../../components/task-card/task-card.component';
 import Modal from '../../components/modal/modal.component';
 import UserContext from '../../userContext';
-import axios from 'axios';
+import SyncLoader from "react-spinners/SyncLoader";
 import './dashboard.styles.scss';
 axios.defaults.withCredentials = true;
 
@@ -15,7 +16,8 @@ class Dashboard extends React.Component {
         tasks: [],
         taskToDelete: undefined,
         sortBy: '',
-        completed: ''
+        completed: '',
+        fetchingTasks: true
     }
 
     handleOpenModal = taskID => {
@@ -31,7 +33,7 @@ class Dashboard extends React.Component {
         axios.delete(`https://ttapi.ahmed-hatem.com/tasks/${this.state.taskToDelete}`)
         .then( res => {
             console.log(res);
-            this.setState( (prevState) => 
+            this.setState( prevState => 
                 ({tasks: prevState.tasks.filter( task => task._id !== this.state.taskToDelete)})
             )
             this.setState( () => ({tasksToDelete: undefined}));
@@ -47,13 +49,16 @@ class Dashboard extends React.Component {
     
     componentDidMount = () => {
         axios.get('https://ttapi.ahmed-hatem.com/tasks')
-            .then( res => this.setState( () => ({ tasks: res.data }) ))
-            .catch(err => {
+            .then( res => {
+                this.setState( () => ({ tasks: res.data, fetchingTasks: false }) );
+            })
+            .catch( err => {
                 if (err.response) {
                     err.response.status === 401 && this.context.setLoggedIn(false);
+                    this.setState(() => ({ fetchingTasks: false }));
                 }
                 else {
-                    console.log(err);
+                    this.setState(() => ({ fetchingTasks: false }));
                 }
             })
     }
@@ -74,6 +79,11 @@ class Dashboard extends React.Component {
     }
 
     render() {
+        if (this.state.fetchingTasks) return (
+            <div className="loading-info">
+                <SyncLoader color={'black'} loading={true} size={15} />
+            </div>
+        )
         return (
             <div className="container logged-in-container">
                 <div className="logged-in-header">
@@ -105,9 +115,11 @@ class Dashboard extends React.Component {
                 }
                 
                 <div className="notasks-and-button-div">
-                    {this.state.tasks.length === 0 
+                    {
+                    this.state.tasks.length === 0
                         && 
-                    <h5 className="no-tasks-heading">You seem to have no tasks at the moment.</h5>}
+                    <h5 className="no-tasks-heading">You seem to have no tasks at the moment.</h5>
+                    }
 
                     <Button
                         className="add-task-button"

@@ -33,6 +33,8 @@ class Header extends React.Component {
     }
 
     render () {
+        if (this.context.fetching) return null;
+
         return (
             this.context.loggedIn ?
                 <div>

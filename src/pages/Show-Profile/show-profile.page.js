@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
 import Figure from 'react-bootstrap/Figure';
 import Button from 'react-bootstrap/Button';
 import avatar from '../../assets/avatar_placeholder.png';
 import UserContext from '../../userContext';
-import axios from 'axios';
+import SyncLoader from "react-spinners/SyncLoader";
 import './show-profile.styles.scss';
 axios.defaults.withCredentials = true;
 
@@ -15,6 +16,7 @@ const ShowProfilePage = (props) => {
     const [completedTasks, setComTasks] = useState('');
     const [joinedAt, setJoinedAt] = useState('');
     const [userAvatar, setAvatar] = useState(false);
+    const [userFetching, setUserFetching] = useState(true);
     const user = useContext(UserContext);
 
     useEffect( () => {
@@ -23,23 +25,30 @@ const ShowProfilePage = (props) => {
             axios.get('https://ttapi.ahmed-hatem.com/tasks')
         ])
             .then( res => {
-                console.log(res[0].data)
                 setName(res[0].data._doc.name);
                 setEmail(res[0].data._doc.email);
                 setAge(res[0].data._doc.age);
                 setJoinedAt(new Date(res[0].data._doc.createdAt).toDateString());
                 setAvatar(res[0].data.hasAvatar);
                 setTasks(res[1].data.length);
-                setComTasks( res[1].data.filter( task => task.completed === true ).length );
+                setComTasks(res[1].data.filter( task => task.completed === true ).length );
+                setUserFetching(false);
             })
-            .catch(err => {
-                err.response ? err.response.status === 401 && user.setLoggedIn(false)
-                    :
-                console.log(err);
+            .catch( err => {
+                if(err.response){
+                    err.response.status === 401 && user.setLoggedIn(false)
+                }
+                setUserFetching(false);
             })
     }, [user])
- 
+
+    if (userFetching) return (
+        <div className="loading-info">
+            <SyncLoader color={'black'} loading={true} size={15} />
+        </div>
+    ) 
     return (
+        
         <div className="container logged-in-container">
             <div className="logged-in-header">
                 <h3>YOUR PROFILE:</h3>

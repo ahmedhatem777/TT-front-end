@@ -1,11 +1,19 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
 import Figure from 'react-bootstrap/Figure';
+import { IconContext } from 'react-icons';
+import { GoChevronLeft } from "react-icons/go";
 
-const NotFoundPage = () => {
+const NotFoundPage = props => {
     return (
         <div className="container logged-in-container">
             <div className="logged-in-header">
-                <h3>Error 404: Page not found</h3>
+                <h3>Error 404</h3>
+                <Button onClick={() => props.history.push('/')}>
+                    <IconContext.Provider value={{ size: "2em" }}>
+                        <GoChevronLeft />
+                    </IconContext.Provider>
+                </Button>
             </div>
 
             <div className="d-flex justify-content-center">

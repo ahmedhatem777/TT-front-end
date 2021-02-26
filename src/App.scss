@@ -18,3 +18,17 @@
     justify-content: space-between;
     align-items: baseline;
 }
+
+.loading-info {
+    display: flex;
+    margin-top: 4rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-info-under {
+    display: flex;
+    margin-top: 1rem;
+    justify-content: center;
+    align-items: center;
+}

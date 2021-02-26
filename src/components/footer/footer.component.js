@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext} from 'react';
 import './footer.styles.scss';
 import { IconContext } from 'react-icons';
 import { AiFillLinkedin, AiFillGithub } from "react-icons/ai";
+import UserContext from '../../userContext';
 
 const Footer = () => {
+    const user = useContext(UserContext);
+    if(user.fetching) return null;
+    
     return (
         <footer className="footer-div bg-primary text-white">
             <p><strong>Made By: </strong>Ahmed Hatem</p>

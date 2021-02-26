@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import Modal from '../modal/modal.component';
 import Figure from 'react-bootstrap/Figure';
 import Form from 'react-bootstrap/Form';
@@ -6,11 +7,11 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import avatar from '../../assets/avatar_placeholder.png';
-import axios from 'axios';
+import SyncLoader from "react-spinners/SyncLoader";
 import './edit-profile-form.styles.scss';
 axios.defaults.withCredentials = true;
 
-const EditProfileForm = (props) => {
+const EditProfileForm = props => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [age, setAge] = useState(0);
@@ -18,6 +19,7 @@ const EditProfileForm = (props) => {
     const [userAvatar, setAvatar] = useState(false);
     const [uploadResponse, setUploadRes] = useState('');
     const [deleteAvatar, setDeleteAvatar] = useState(false);
+    const [userFetching, setUserFetching] = useState(true);
 
     useEffect( () => {
         axios.get('https://ttapi.ahmed-hatem.com/users/me')
@@ -26,10 +28,17 @@ const EditProfileForm = (props) => {
                 setAge(data._doc.age);
                 setEmail(data._doc.email);
                 setAvatar(data.hasAvatar);
+                setUserFetching(false);
+
             })
-            .catch( err => console.log(err) );
+            .catch(() => setUserFetching(false));
     }, [])
 
+    if (userFetching) return (
+        <div className="loading-info-under">
+            <SyncLoader color={'black'} loading={true} size={15} />
+        </div>
+    ) 
     return (
         <>
             <Form onSubmit={ props.onSubmit }>
@@ -162,8 +171,8 @@ const EditProfileForm = (props) => {
                             />
                             {
                                 !!uploadResponse &&
-                                    <Alert size="sm" variant="info" className="avatar-upload-group">
-                                        {uploadResponse}
+                                    <Alert size="sm" variant="primary" className="avatar-upload-group">
+                                        <small><b>{uploadResponse}</b></small> 
                                     </Alert>
                             }
                         </div>

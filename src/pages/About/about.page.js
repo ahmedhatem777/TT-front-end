@@ -1,6 +1,6 @@
 import React from 'react';
 import Jumbotron from 'react-bootstrap/Jumbotron';
-import './about.styles.scss'
+import './about.styles.scss';
 
 const AboutPage = () => {
     return (

@@ -4,6 +4,7 @@ import SignInForm from '../../components/sign-in-form/sign-in-form.component';
 import SignUpForm from '../../components/sign-up-form/sign-up-form.component';
 import UserContext from '../../userContext';
 import { Redirect } from 'react-router-dom';
+import PuffLoader from "react-spinners/PuffLoader";
 import './home.styles.scss';
 axios.defaults.withCredentials = true;
 
@@ -47,33 +48,39 @@ class HomePage extends React.Component{
             .then(res => {
                 console.log(res)
                 this.context.setLoggedIn(true);
-                //this.props.history.push('/dashboard');
+                this.context.setFetching(false);
             })
-            .catch( err => console.log(err));
+            .catch(() => this.context.setFetching(false) )
     }
 
     render() {
+        if(this.context.fetching) return (
+            <div className="loading-screen">
+                <PuffLoader color={'black'} loading={true} size={150} />
+            </div>
+        )
+
         return (
             this.context.loggedIn ?
-                 <Redirect to="/dashboard"/>
-            :
+                <Redirect to="/dashboard" />
+                :
                 <div className="row justify-content-around homepage-row">
                     <div className="col-md-4">
-                        <SignInForm 
-                            handleSignIn={this.handleSignIn} 
-                            signInAlert={this.state.signInAlert} 
-                            signInButtonLoad={this.state.signInButtonLoad} 
+                        <SignInForm
+                            handleSignIn={this.handleSignIn}
+                            signInAlert={this.state.signInAlert}
+                            signInButtonLoad={this.state.signInButtonLoad}
                         />
                     </div>
                     <div className="col-md-4 sign-up-column">
-                        <SignUpForm 
+                        <SignUpForm
                             handleSignUp={this.handleSignUp}
                             signUpAlert={this.state.signUpAlert}
-                            signUpButtonLoad={this.state.signUpButtonLoad} 
+                            signUpButtonLoad={this.state.signUpButtonLoad}
                         />
                     </div>
                 </div>
-        )   
+        ) 
     }
 }
 

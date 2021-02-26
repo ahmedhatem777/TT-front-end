@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import AuthRoute from './components/auth-route/auth-route.component';
 import Header from './components/header/header.component';
@@ -13,39 +13,44 @@ import NotFoundPage from './pages/Not-Found/not-found.page';
 import Footer from './components/footer/footer.component';
 import UserContext from './userContext';
 import './App.scss';
+// const Header = lazy(() => import('./components/header/header.component'));
+// const Footer = lazy(() => import('./components/footer/footer.component'));
+// const HomePage = lazy(() => import('./pages/Home/home.page'));
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [fetching, setFetching] = useState(true);
 
     return (
       <BrowserRouter>
         <div className="main-div">
 
-          <UserContext.Provider value={{loggedIn, setLoggedIn}}>
-            <Header />
-            <div className="container-fluid">
-              <Switch>
+          <UserContext.Provider value={{loggedIn, setLoggedIn, fetching, setFetching}}>
+              <Header />
+                <div className="container-fluid">
+                  <Switch>
 
-                <Route exact path="/" component={HomePage} />
+                    <Route exact path="/" component={HomePage} />
 
-                <Route path="/about" component={AboutPage} />
+                    <Route path="/about" component={AboutPage} />
 
-                <AuthRoute path="/dashboard" component={Dashboard} />
+                    <AuthRoute path="/dashboard" component={Dashboard} />
 
-                <AuthRoute path="/addtask" component={AddTaskPage} />
+                    <AuthRoute path="/addtask" component={AddTaskPage} />
 
-                <AuthRoute path="/showprofile" component={ShowProfilePage} />
+                    <AuthRoute path="/showprofile" component={ShowProfilePage} />
 
-                <AuthRoute path="/edittask/:id" component={EditTaskPage} />
+                    <AuthRoute path="/edittask/:id" component={EditTaskPage} />
 
-                <AuthRoute path="/settings" component={SettingsPage} />
+                    <AuthRoute path="/settings" component={SettingsPage} />
 
-                <Route component={NotFoundPage} />
+                    <Route path="/*" component={NotFoundPage} />
 
-              </Switch>
-            </div>
+                  </Switch>
+                </div>
+             <Footer />
           </UserContext.Provider>
-          <Footer />
+          
         </div>
       </BrowserRouter>
     )
