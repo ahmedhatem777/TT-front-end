@@ -62,7 +62,7 @@ class EditTaskPage extends React.Component {
     render() {
         if (this.state.fetchingTask) return (
             <div className="loading-info">
-                <SyncLoader color={'black'} loading={true} size={15} />
+                <SyncLoader color={'black'} loading={true} size={10} />
             </div>
         ) 
         return (

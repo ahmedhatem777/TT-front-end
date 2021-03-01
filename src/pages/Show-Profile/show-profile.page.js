@@ -44,7 +44,7 @@ const ShowProfilePage = (props) => {
 
     if (userFetching) return (
         <div className="loading-info">
-            <SyncLoader color={'black'} loading={true} size={15} />
+            <SyncLoader color={'black'} loading={true} size={10} />
         </div>
     ) 
     return (

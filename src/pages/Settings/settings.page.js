@@ -147,7 +147,8 @@ class SettingsPage extends React.Component {
                                         />
                                 }
                             />
-                            <Route path={`${this.props.match.path}/*`} component={NotFoundPage} />
+                            
+                            <Route component={NotFoundPage} />
                         </Switch>
                     </div>
                 </div>

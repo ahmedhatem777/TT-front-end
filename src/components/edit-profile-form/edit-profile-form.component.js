@@ -36,7 +36,7 @@ const EditProfileForm = props => {
 
     if (userFetching) return (
         <div className="loading-info-under">
-            <SyncLoader color={'black'} loading={true} size={15} />
+            <SyncLoader color={'black'} loading={true} size={10} />
         </div>
     ) 
     return (
@@ -166,7 +166,7 @@ const EditProfileForm = props => {
                                         })
                                         .then(res => setUploadRes(res.data))
                                         .catch(err => {
-                                            err.response? setUploadRes(err.response.data.error) : setUploadRes('Upload Failed, try again!');
+                                            err.response? setUploadRes(err.response.data) : setUploadRes('Upload Failed, try again!');
                                         })
                                     }
                                 } 
