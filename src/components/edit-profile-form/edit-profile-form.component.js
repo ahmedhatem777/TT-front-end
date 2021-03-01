@@ -20,6 +20,7 @@ const EditProfileForm = props => {
     const [uploadResponse, setUploadRes] = useState('');
     const [deleteAvatar, setDeleteAvatar] = useState(false);
     const [userFetching, setUserFetching] = useState(true);
+    const [uploadingAvatar, setUploading] = useState(false);
 
     useEffect( () => {
         axios.get('https://ttapi.ahmed-hatem.com/users/me')
@@ -156,26 +157,41 @@ const EditProfileForm = props => {
                                 id="exampleFormControlFile1"
                                 accept="image/png, image/jpeg, image/jpg"
                                 onChange={e => {
+                                    if(e.target.files.length > 0){
+                                        setUploading(true);
+                                    }
                                     let form_data = new FormData();
                                     form_data.append('avatar', e.target.files[0]);
                                     axios.post('https://ttapi.ahmed-hatem.com/users/me/avatar', form_data,
                                         {
                                             headers: {
                                                 'content-type': 'multipart/form-data'
-                                            }
+                                            },
+                                            timeout: 20000
                                         })
-                                        .then(res => setUploadRes(res.data))
+                                        .then(res => {
+                                            setUploadRes(res.data);
+                                            setUploading(false)
+                                        })
                                         .catch(err => {
-                                            err.response? setUploadRes(err.response.data) : setUploadRes('Upload Failed, try again!');
+                                            console.log(err);
+                                            setUploading(false);
+                                            err.response? setUploadRes(err.response.data) : setUploadRes('UPLOAD FAILED, TRY A SMALLER IMAGE! (<1MB)');
                                         })
                                     }
                                 } 
                             />
                             {
-                                !!uploadResponse &&
-                                    <Alert size="sm" variant="primary" className="avatar-upload-group">
-                                        <small><b>{uploadResponse}</b></small> 
-                                    </Alert>
+                                uploadingAvatar 
+                                    &&
+                                <Spinner className="avatar-spinner" animation="border" size="sm" />
+                            }
+                            {
+                                !!uploadResponse 
+                                    &&
+                                <Alert size="sm" variant="primary" className="avatar-upload-group">
+                                    <small><b>{uploadResponse}</b></small> 
+                                </Alert>
                             }
                         </div>
                         
