@@ -10,6 +10,7 @@ import NotFoundPage from '../Not-Found/not-found.page';
 import UserContext from '../../userContext';
 import './settings.styles.scss';
 
+// Settings page which consists of 3 tabs/pages: logout, edit profile, delete account
 class SettingsPage extends React.Component {
     state = {
         modalShow: false, 

@@ -24,9 +24,14 @@ class HomePage extends React.Component{
                 this.props.history.push('/dashboard');
             })
             .catch( err => {
-                if (err.response) this.setState(() => ({ signInAlert: err.response.data }));
+                if (err.response) {
+                    this.setState(() => ({ signInAlert: err.response.data }));
+                }
+                else {
+                    this.setState(() => ({ signInAlert: 'Something went wrong, try again!'}))
+                }
+                
                 this.setState(() => ({ signInButtonLoad: false }));
-                console.log(err);
             })
     }
 
@@ -38,7 +43,13 @@ class HomePage extends React.Component{
                 this.props.history.push('/dashboard');
             })
             .catch(err => {
-                if (err.response) this.setState(() => ({ signUpAlert: err.response.data }));
+                if (err.response) {
+                    this.setState(() => ({ signUpAlert: err.response.data }));
+                }
+                else {
+                    this.setState(() => ({ signUpAlert: 'Something went wrong, try again!' }));
+                }
+                
                 this.setState(() => ({ signUpButtonLoad: false }));
             })
     }
@@ -46,7 +57,6 @@ class HomePage extends React.Component{
     componentDidMount = () => {
         axios.get('https://ttapi.ahmed-hatem.com/users/cookie')
             .then(res => {
-                console.log(res)
                 this.context.setLoggedIn(true);
                 this.context.setFetching(false);
             })

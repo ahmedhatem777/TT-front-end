@@ -4,6 +4,7 @@ import Figure from 'react-bootstrap/Figure';
 import { IconContext } from 'react-icons';
 import { GoChevronLeft } from "react-icons/go";
 
+// Not found page, redirected to when router switch doesn't find a match
 const NotFoundPage = props => {
     return (
         <div className="container logged-in-container">

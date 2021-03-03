@@ -11,6 +11,7 @@ import SyncLoader from "react-spinners/SyncLoader";
 import './edit-profile-form.styles.scss';
 axios.defaults.withCredentials = true;
 
+// Form used in "settings/editprofile" page
 const EditProfileForm = props => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');

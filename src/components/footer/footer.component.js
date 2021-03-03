@@ -1,8 +1,8 @@
 import React, { useContext} from 'react';
-import './footer.styles.scss';
 import { IconContext } from 'react-icons';
 import { AiFillLinkedin, AiFillGithub } from "react-icons/ai";
 import UserContext from '../../userContext';
+import './footer.styles.scss';
 
 const Footer = () => {
     const user = useContext(UserContext);
@@ -10,7 +10,7 @@ const Footer = () => {
     
     return (
         <footer className="footer-div bg-primary text-white">
-            <p><strong>Made By: </strong>Ahmed Hatem</p>
+            <p><strong>Author: </strong>Ahmed Hatem</p>
             <a className="text-white" href="mailto:ahmedhatem777@hotmail.com">ahmedhatem777@hotmail.com</a>
 
             <div className="social-icons">
@@ -18,7 +18,7 @@ const Footer = () => {
                     <div className="icons">
                         <a 
                             className="social-icon" 
-                            href="https://www.google.com"
+                            href="https://www.linkedin.com/in/ahmed-hatem-515751180/"
                             target="_blank"
                             rel="noopener noreferrer"
                         > 
@@ -27,7 +27,7 @@ const Footer = () => {
 
                         <a 
                             className="social-icon"
-                            href="https://www.google.com" 
+                            href="https://github.com/ahmedhatem777" 
                             target="_blank"
                             rel="noopener noreferrer"
                         > 

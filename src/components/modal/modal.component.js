@@ -2,7 +2,8 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-const MyModal = (props) => {
+// Reusable modal component using bootstrap's modal component
+const MyModal = props => {
     return (
         <Modal
             show={props.show}

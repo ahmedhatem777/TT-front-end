@@ -36,7 +36,7 @@ class AddTaskPage extends React.Component {
                     this.setState(() => ({ addTaskAlert: err.response.data, addButtonLoad: false }));
                 }
                 else { 
-                    console.log(err);
+                    this.setState(() => ({ addTaskAlert: 'Something went wrong, try again', addButtonLoad: false }));
                 }
             })
     }

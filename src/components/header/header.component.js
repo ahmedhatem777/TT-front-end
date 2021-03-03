@@ -7,6 +7,7 @@ import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import UserContext from '../../userContext';
 import './header.styles.scss';
 
+// Header component that renders two different versions depending on user being logged in or not
 class Header extends React.Component {
     state = {
         menuOpen: false

@@ -13,11 +13,10 @@ import NotFoundPage from './pages/Not-Found/not-found.page';
 import Footer from './components/footer/footer.component';
 import UserContext from './userContext';
 import './App.scss';
-// const Header = lazy(() => import('./components/header/header.component'));
-// const Footer = lazy(() => import('./components/footer/footer.component'));
-// const HomePage = lazy(() => import('./pages/Home/home.page'));
 
 const App = () => {
+
+  // Fields in the user context
   const [loggedIn, setLoggedIn] = useState(false);
   const [fetching, setFetching] = useState(true);
 

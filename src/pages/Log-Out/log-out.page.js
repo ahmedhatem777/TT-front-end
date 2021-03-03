@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from '../../components/modal/modal.component';
 import './log-out.styles.scss';
 
+// Main page in the settings page
 const LogOutPage = props => {
     return (
         <div className="row justify-content-around">

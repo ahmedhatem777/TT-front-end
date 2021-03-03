@@ -32,13 +32,12 @@ class Dashboard extends React.Component {
     handleDeleteTask = () => {
         axios.delete(`https://ttapi.ahmed-hatem.com/tasks/${this.state.taskToDelete}`)
         .then( res => {
-            console.log(res);
             this.setState( prevState => 
                 ({tasks: prevState.tasks.filter( task => task._id !== this.state.taskToDelete)})
             )
             this.setState( () => ({tasksToDelete: undefined}));
         })
-        .catch( err => console.log(err));
+        .catch( err => console.log('Error while deleting task!'));
         this.handleHideModal();
     }
 
@@ -72,7 +71,7 @@ class Dashboard extends React.Component {
                         err.response.status === 401 && this.context.setLoggedIn(false);
                     }
                     else {
-                        console.log(err);
+                        console.log('Error while fetching tasks with sorting');
                     }
                 })
         }

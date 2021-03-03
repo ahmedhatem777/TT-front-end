@@ -6,6 +6,7 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import './sign-up-form.styles.scss';
 
+// Sign up form used in the homepage
 const SignUpForm = (props) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');

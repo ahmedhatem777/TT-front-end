@@ -4,15 +4,14 @@ import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import { IconContext } from 'react-icons';
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-// import moment from 'moment';
 import './task-card.styles.scss';
 
+// Task card used in the dashboard page
 const TaskCard = (props) => {
     return (
         <div>
             <Card className="text-white bg-primary mb-3 task-card" >
                 <Card.Header className="task-card-header">
-                    {/* <div className="row justify task-card-header-row"> */}
                     <h6 className="text-white">{props.taskTitle}</h6>
                     <Button 
                         variant="danger" 

@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from '../../components/modal/modal.component';
 import './delete-account.styles.scss';
 
+// Delete Account Page used in the /settings page
 const DeleteAccountPage = props => {
     return (
         <div className="row justify-content-around">
