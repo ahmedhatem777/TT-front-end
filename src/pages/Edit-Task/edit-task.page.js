@@ -23,7 +23,7 @@ class EditTaskPage extends React.Component {
     }
 
     componentDidMount = () => {
-        axios.get(`https://ttapi.ahmed-hatem.com/tasks/${this.props.match.params.id}`)
+        axios.get(`https://task-manager-api-omega.vercel.app/tasks/${this.props.match.params.id}`)
             .then( ({data}) => {
                 this.setState( () => ({
                     title: data.title,
@@ -47,7 +47,7 @@ class EditTaskPage extends React.Component {
         const description = this.state.description;
         const completed = this.state.completed;
 
-        axios.patch(`https://ttapi.ahmed-hatem.com/tasks/${this.props.match.params.id}`, 
+        axios.patch(`https://task-manager-api-omega.vercel.app/tasks/${this.props.match.params.id}`, 
         {title, description, completed})
             .then( res => this.props.history.push('/dashboard'))
             .catch(err => { 

@@ -18,7 +18,7 @@ class HomePage extends React.Component{
 
     handleSignIn = (email, password) => {
         this.setState( () => ({signInButtonLoad: true}));
-        axios.post('https://ttapi.ahmed-hatem.com/users/login/', {email, password})
+        axios.post('https://task-manager-api-omega.vercel.app/users/login/', {email, password})
             .then( res => {
                 this.context.setLoggedIn(true);
                 this.props.history.push('/dashboard');
@@ -37,7 +37,7 @@ class HomePage extends React.Component{
 
     handleSignUp = (name, email, password) => {
         this.setState(() => ({ signUpButtonLoad: true }));
-        axios.post('https://ttapi.ahmed-hatem.com/users/', {name, email, password })
+        axios.post('https://task-manager-api-omega.vercel.app/users/', {name, email, password })
             .then( res => {
                 this.context.setLoggedIn(true);
                 this.props.history.push('/dashboard');
@@ -55,7 +55,7 @@ class HomePage extends React.Component{
     }
 
     componentDidMount = () => {
-        axios.get('https://ttapi.ahmed-hatem.com/users/cookie')
+        axios.get('https://task-manager-api-omega.vercel.app/users/cookie')
             .then(res => {
                 this.context.setLoggedIn(true);
                 this.context.setFetching(false);

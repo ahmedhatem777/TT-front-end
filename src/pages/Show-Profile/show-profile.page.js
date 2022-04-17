@@ -21,8 +21,8 @@ const ShowProfilePage = (props) => {
 
     useEffect( () => {
         Promise.all([
-            axios.get('https://ttapi.ahmed-hatem.com/users/me'),
-            axios.get('https://ttapi.ahmed-hatem.com/tasks')
+            axios.get('https://task-manager-api-omega.vercel.app/users/me'),
+            axios.get('https://task-manager-api-omega.vercel.app/tasks')
         ])
             .then( res => {
                 setName(res[0].data._doc.name);
@@ -61,7 +61,7 @@ const ShowProfilePage = (props) => {
                             width={200}
                             height={200}
                             alt="200x200"
-                            src={userAvatar ? 'https://ttapi.ahmed-hatem.com/users/me/avatar' : avatar}
+                            src={userAvatar ? 'https://task-manager-api-omega.vercel.app/users/me/avatar' : avatar}
                             rounded  
                         />
                         <Figure.Caption>
