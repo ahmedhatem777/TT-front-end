@@ -27,13 +27,13 @@ class SettingsPage extends React.Component {
     }
 
     handleLogOut = () => {
-        axios.post('https://task-manager-api-omega.vercel.app/users/logout')
+        axios.post('https://task-manager-api-ahmedhatem777.vercel.app/users/logout')
             .then( res => this.context.setLoggedIn(false) )
             .catch( err => this.context.setLoggedIn(false) );
     }
 
     handleLogOutAll = () => {
-        axios.post('https://task-manager-api-omega.vercel.app/users/logoutAll')
+        axios.post('https://task-manager-api-ahmedhatem777.vercel.app/users/logoutAll')
             .then( res => this.context.setLoggedIn(false) )
             .catch( err => this.context.setLoggedIn(false));
     }
@@ -44,8 +44,8 @@ class SettingsPage extends React.Component {
 
         if(deleteAvatar) {
             Promise.all([
-                axios.patch('https://task-manager-api-omega.vercel.app/users/me', info),
-                axios.delete('https://task-manager-api-omega.vercel.app/users/me/avatar')
+                axios.patch('https://task-manager-api-ahmedhatem777.vercel.app/users/me', info),
+                axios.delete('https://task-manager-api-ahmedhatem777.vercel.app/me/avatar')
             ])
                 .then( res => this.props.history.push('/showprofile') )
                 .catch( err => {
@@ -60,7 +60,7 @@ class SettingsPage extends React.Component {
                 })
         }
         else {
-            axios.patch('https://task-manager-api-omega.vercel.app/users/me', info)
+            axios.patch('https://task-manager-api-ahmedhatem777.vercel.app/users/me', info)
                 .then(res => this.props.history.push('/showprofile'))
                 .catch(err => {
                     if (err.response) {
@@ -76,7 +76,7 @@ class SettingsPage extends React.Component {
     }
 
     handleDeleteAccount = () => {
-        axios.delete('https://task-manager-api-omega.vercel.app/users/me')
+        axios.delete('https://task-manager-api-ahmedhatem777.vercel.app/users/me')
             .then(res => this.props.history.push('/') )
             .catch(err => {
                 err.response? err.response.status === 401 && this.context.setLoggedIn(false)

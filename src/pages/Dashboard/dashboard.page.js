@@ -30,7 +30,7 @@ class Dashboard extends React.Component {
     }
 
     handleDeleteTask = () => {
-        axios.delete(`https://task-manager-api-omega.vercel.app/tasks/${this.state.taskToDelete}`)
+        axios.delete(`https://task-manager-api-ahmedhatem777.vercel.app/tasks/${this.state.taskToDelete}`)
         .then( res => {
             this.setState( prevState => 
                 ({tasks: prevState.tasks.filter( task => task._id !== this.state.taskToDelete)})
@@ -47,7 +47,7 @@ class Dashboard extends React.Component {
     }
     
     componentDidMount = () => {
-        axios.get('https://task-manager-api-omega.vercel.app/tasks')
+        axios.get('https://task-manager-api-ahmedhatem777.vercel.app/tasks')
             .then( res => {
                 this.setState( () => ({ tasks: res.data, fetchingTasks: false }) );
             })
@@ -64,7 +64,7 @@ class Dashboard extends React.Component {
 
     componentDidUpdate = (prevProps, prevState) => {
         if(prevState.sortBy !== this.state.sortBy || prevState.completed !== this.state.completed) {
-            axios.get(`https://task-manager-api-omega.vercel.app/tasks?sortBy=${this.state.sortBy}&completed=${this.state.completed}`)
+            axios.get(`https://task-manager-api-ahmedhatem777.vercel.app/tasks?sortBy=${this.state.sortBy}&completed=${this.state.completed}`)
                 .then(res => this.setState( () => ({ tasks: res.data }) ))
                 .catch(err => {
                     if (err.response) {

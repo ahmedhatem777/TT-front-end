@@ -24,7 +24,7 @@ const EditProfileForm = props => {
     const [uploadingAvatar, setUploading] = useState(false);
 
     useEffect( () => {
-        axios.get('https://task-manager-api-omega.vercel.app/users/me')
+        axios.get('https://task-manager-api-ahmedhatem777.vercel.app/me')
             .then(({ data }) => {
                 setName(data._doc.name);
                 setAge(data._doc.age);
@@ -53,7 +53,7 @@ const EditProfileForm = props => {
                                 width={200}
                                 height={200}
                                 alt="200x200"
-                                    src={userAvatar ? 'https://task-manager-api-omega.vercel.app/users/me/avatar' : avatar}
+                                    src={userAvatar ? 'https://task-manager-api-ahmedhatem777.vercel.app/users/me/avatar' : avatar}
                                 rounded
                             />
                             {
@@ -163,7 +163,7 @@ const EditProfileForm = props => {
                                     }
                                     let form_data = new FormData();
                                     form_data.append('avatar', e.target.files[0]);
-                                    axios.post('https://task-manager-api-omega.vercel.app/users/me/avatar', form_data,
+                                    axios.post('https://task-manager-api-ahmedhatem777.vercel.app/users/me/avatar', form_data,
                                         {
                                             headers: {
                                                 'content-type': 'multipart/form-data'
