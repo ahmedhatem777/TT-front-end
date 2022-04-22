@@ -55,7 +55,7 @@ class HomePage extends React.Component{
     }
 
     componentDidMount = () => {
-        axios.get('https://task-manager-api-ahmedhatem777.vercel.app/users/cookie/')
+        axios.get('https://task-manager-api-ahmedhatem777.vercel.app/users/cookie')
             .then(res => {
                 this.context.setLoggedIn(true);
                 this.context.setFetching(false);
