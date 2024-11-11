@@ -1,7 +1,5 @@
 # Task-Tracker
 
-The project is available on [tt-front-end.vercel.app](https://tt-front-end.vercel.app/).
-
 ### Background:
 
 This project is the front-end for [task-manager-api](https://github.com/ahmedhatem777/task-manager-api), it is a simple bug/task tracker web application where users can sign up, sign in, add, remove, update and view tasks and more.
